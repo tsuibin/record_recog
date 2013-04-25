@@ -1,4 +1,5 @@
 #include "my_alsa.h"
+#include "record_recog.h"
 
 extern int first_record;
 extern int record_abort;
