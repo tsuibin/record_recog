@@ -1,0 +1,9 @@
+由于科大讯飞只提供了 32 位的库，所以 64 位请安装 32 位依赖库。
+运行时请设置：LD_LIBRARY_PATH
+如：
+	MSCLIBS_PATH=./bin
+	export LD_LIBRARY_PATH=${MSCLIBS_PATH} ：${LD_LIBRARY_PATH}
+
+MSCLIBS_PATH : 为科大讯飞库的位置。
+
+其中 Makefile 是在 64 下写的，如果是 32 位机器，请将 -m32 去掉。
