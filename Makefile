@@ -3,12 +3,14 @@
 CC=gcc
 CCX=g++
 
-BASEDIR = .
-#include configure.mk
-
 PROG_NAME	= msc_test
+SRCPATH=src
+INCSPATH=include
+LIBSPATH=bin
 
-LIBS	:= -Lbin -Iinclude -lmsc -ldl -lpthread -lasound
+LIBS	:= -L${LIBSPATH} -I${INCSPATH} -lmsc -ldl -lpthread -lasound
+
+vpath %.cpp ${SRCPATH}
 
 #OBJS := test_alsa.o my_alsa.o
 #OBJS := my_qisr.o test_qisr.o
