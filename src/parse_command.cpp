@@ -46,8 +46,15 @@ void search_str(char *cmd_buf, char *exec_buf, char *conf_file)
 	int cmd_len = strlen(cmd_buf);
 	char read_buf[READ_LINE+1];
 
+	if ( cmd_len <= 0 ) {
+		return;
+	}
+	
+	//char cwd[80];
+	fprintf(stderr, "cwd : %s\n", get_current_dir_name());
+	fprintf(stderr, "search_str file : %s\n",  conf_file);
 	if ( (fp = fopen(conf_file, "r")) == NULL ) {
-		fprintf(stderr, "search_str open file err...\n");
+		fprintf(stderr, "search_str open file err %s\n", strerror(errno));
 		return;
 	}
 
@@ -88,6 +95,10 @@ void search_index(char *cmd_buf)
 	char exec_buf[READ_LINE];
 	char read_buf[READ_LINE+1];
 
+	if ( cmd_len <= 0 ) {
+		return;
+	}
+	
 	if ( (fp = fopen(INDEX_FILE, "r")) == NULL ) {
 		fprintf(stderr, "search_str open file err...\n");
 		return;
@@ -115,6 +126,8 @@ void search_index(char *cmd_buf)
 			fp = NULL;
 			
 			str_copy_delim(exec_buf, ':');
+			fprintf(stderr, "cur_process: %s\n", cur_process_name);
+			fprintf(stderr, "cur_config: %s\n", cur_config_name);
 			break;
 		}
 	}
@@ -148,6 +161,9 @@ void str_copy_delim(char *src, char delim)
 		flag = 0;
 		memcpy(cur_process_name, src, i);
 		memcpy(cur_config_name, ptr + 1, len -1 - i);
+		if ( cur_config_name[len -2 - i] == '\n' ) {
+			cur_config_name[len -2 - i] = '\0';
+		}
 	}
 }
 
@@ -179,12 +195,13 @@ void parse_record(char *cmd_buf)
 		system(exec_buf);
 	}
 	*/
+	sys_err("parse record : %s\n", cmd_buf);
 	return;
 }
 
 int is_config_set()
 {
-	if (cur_config_name == NULL) {
+	if (cur_config_name[0] == '\0' ) {
 		return 0;
 	} else {
 		return 1;
@@ -198,19 +215,42 @@ int is_process_open(char *buf)
 	//char tmp[4];
 	char sys_buf[READ_LINE];
 
+	fprintf(stderr, "is_process_open start...\n" );
 	memset(sys_buf, 0, READ_LINE);
-	sscanf(sys_buf, "ps aux | grep -w %s | wc -l > rows", buf );
+	sprintf(sys_buf, "pgrep -f  %s | wc -l > rows", buf );
+	sys_err("sys_buf : %s\n", sys_buf);
 	system(sys_buf);
 
 	fp = fopen("rows", "r");
 	//fread(tmp, 1, 4, fp);
 	fscanf(fp, "%d", &i);
 	fclose(fp);
-	printf("%d\n", i);
+	printf("%d\n", --i);
 	
-	if ( i > 1 ) {
+	fprintf(stderr, "is_process_open end...\n" );
+	if ( i > 0 ) {
 		return 1;
 	} else {
 		return 0;
 	}
+}
+
+unsigned long get_pid_via_name( char *process_name )
+{
+	char buf[1024];
+	unsigned long pid = 0;
+	FILE *fp = NULL;
+	
+	sprintf( buf, "ps aux | grep %s | sed -n 1p | awk '{print $2}' > pid_tmp", 
+			process_name );
+	system(buf);
+	
+	if ( (fp = fopen("pid_tmp", "r")) == NULL ) {
+		sys_err("get_pid failed...\n");
+		return 0;
+	}
+	fscanf(fp, "%lud", &pid);
+	fclose(fp);
+	
+	return pid;
 }

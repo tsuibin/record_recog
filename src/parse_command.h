@@ -22,6 +22,6 @@ void str_copy_delim(char *src, char delim);
 /* 程序是否打开 */
 int is_process_open(char *buf);
 
-
+unsigned long get_pid_via_name( char *process_name );
 
 #endif
