@@ -75,21 +75,51 @@ void parse_chooser(int chooser)
 			fprintf(stderr, "开始录音，请输入你的指令：\n");
 				
 			/* 录音 2s */
-			ret = MySndRecord(2, INPUT_FILE);
+			ret = MySndRecord(3, INPUT_FILE);
 			if ( ret == -1 ) {
 				fprintf(stderr, "录音失败...\n");
 				exit(-1);
 			}
-
+			/*
 			parse_record(cmd_buf);	//获得文本
 			if ( cmd_buf[0] == '\0' ) {
 				break;
 			}
 			
-			//char tmp_buf[] = "浏览器";
-			//char tmp_buf[] = "新建标签";
-			//memcpy(cur_process_name, "firefox", 7);
-			//memcpy(cmd_buf, tmp_buf, strlen(tmp_buf));
+			if ( !is_config_set() ) {
+				fprintf(stderr, "!is_config_set\n");
+				search_index(cmd_buf);
+				
+				if ( cur_process_name == NULL ) {
+					break;
+				}
+				
+				open_process(cmd_buf, exec_buf, cur_process_name);
+			} else {
+				fprintf(stderr, "is_config_set\n");
+				search_str(cmd_buf, exec_buf, cur_config_name);
+				if ( exec_buf[0] != '\0' ) {
+						//system(exec_buf);
+						fprintf(stderr, "exec_buf != NULL\n");
+						strtok_num(exec_buf, keys);
+						exec_command(keys, get_pid_via_name(cur_process_name));
+				} else {
+					search_index(cmd_buf);
+				
+					if ( cur_process_name == NULL ) {
+						break;
+					}
+					open_process(cmd_buf, exec_buf, cur_process_name);
+				}
+			}*/
+			break;
+		}
+		case 2: {
+			parse_record(cmd_buf);
+			if ( cmd_buf[0] == '\0' ) {
+				break;
+			}
+			
 			if ( !is_config_set() ) {
 				fprintf(stderr, "!is_config_set\n");
 				search_index(cmd_buf);
@@ -118,9 +148,6 @@ void parse_chooser(int chooser)
 			}
 			break;
 		}
-		case 2:
-			parse_record(cmd_buf);
-			break;
 		case 3:
 			exit(0);
 			break;

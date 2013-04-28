@@ -44,7 +44,7 @@ int main()
 		memset(cmd_buf, 0, BUF_LEN);
 		memset(exec_buf, 0, READ_LINE);
 		
-		sys_err("请选择要进入的应用程序(输入quit返回上一层)：");
+		sys_err("请选择要进入的应用程序(输入quit退出)：");
 		scanf("%s", cmd_buf);
 		fflush(stdin);
 		sys_err("cmd : %s\n", cmd_buf);
