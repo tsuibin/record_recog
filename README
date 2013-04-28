@@ -1,3 +1,14 @@
 2013-04-25
 录音并识别。
 录音使用 alsa 库，语音识别使用科大讯飞提供的接口。
+
+依赖(64位)：
+ia32-libs
+gcc-multilib
+libasound2-dev
+libx11-data:i386
+libx11-dev:i386
+libxtst-dev:i386
+libxmu-dev:i386
+
+依赖只是部分，不全。
