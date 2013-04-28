@@ -8,18 +8,6 @@ int record_abort;
 char cur_process_name[BUF_LEN];
 char cur_config_name[READ_LINE];
 
-void open_process(char *cmd_buf, char *exec_buf, char *process_name)
-{
-	if ( !is_process_open(process_name) ) {
-		search_str(process_name, exec_buf, OPEN_FILE);
-		if ( exec_buf != NULL ) {
-			system(exec_buf);
-		}
-	} else {
-		set_focus( get_pid_via_name(process_name) );
-	}
-}
-
 int main(int argc, char **argv)
 {
 	int chooser = 0;
@@ -153,5 +141,17 @@ void parse_chooser(int chooser)
 			break;
 		default:
 			break;
+	}
+}
+
+void open_process(char *cmd_buf, char *exec_buf, char *process_name)
+{
+	if ( !is_process_open(process_name) ) {
+		search_str(process_name, exec_buf, OPEN_FILE);
+		if ( exec_buf != NULL ) {
+			system(exec_buf);
+		}
+	} else {
+		set_focus( get_pid_via_name(process_name) );
 	}
 }

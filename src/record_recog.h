@@ -11,5 +11,6 @@ void catch_signal(int signo);
 
 void parse_record();
 void parse_chooser(int chooser);
+void open_process(char *cmd_buf, char *exec_buf, char *process_name);
 
 #endif
