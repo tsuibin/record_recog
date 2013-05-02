@@ -112,10 +112,9 @@ void has_set_config(char *cmd_buf, char *exec_buf, int *keys)
 		if ( strncmp(cur_process.type, "keys", 4 ) == 0 ) {
 			fprintf(stderr, "exec_buf != NULL\n");
 			strtok_num(exec_buf, keys);
-			exec_command(keys, get_pid_via_name(cur_process.name));
+			exec_command(keys);
 		} else if ( strncmp(cur_process.type, "func", 4 ) == 0 ) {
-			//set_focus( get_pid_via_name(cur_process.name) );
-			activate_window( get_pid_via_name(cur_process.name) );
+			set_focus();
 			
 			//sys_err("enter music...\n");
 			if ( strncmp(cur_process.name, "deepin-music-player", 19 ) == 0 ) {
@@ -138,8 +137,7 @@ void open_process(char *cmd_buf, char *exec_buf, char *process_name)
 		}
 	} else {
 		printf("open process : %s...\n", process_name );
-		//set_focus( get_pid_via_name(process_name) );
-		activate_window( get_pid_via_name(process_name) );
+		set_focus();
 	}
 }
 

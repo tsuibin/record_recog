@@ -49,7 +49,6 @@ void search_str(char *cmd_buf, char *exec_buf, char *conf_file)
 		return;
 	}
 	
-	//char cwd[80];
 	fprintf(stderr, "cwd : %s\n", get_current_dir_name());
 	fprintf(stderr, "search_str file : %s\n",  conf_file);
 	if ( (fp = fopen(conf_file, "r")) == NULL ) {
@@ -138,7 +137,6 @@ void search_index(char *cmd_buf)
 void str_copy_delim(char *src)
 {
 	char *p = NULL;
-	//char *tmp = NULL;
 	int len = 0;
 	
 	memset(&cur_process, 0, sizeof(cur_process));
@@ -158,8 +156,6 @@ void str_copy_delim(char *src)
 	memcpy(cur_process.config, p, strlen(p));
 	printf("config: %s\n", cur_process.config);
 	
-	//tmp = p + strlen(p) + 1;
-	//memcpy(cur_process.type, tmp, strlen(tmp));
 	p = strtok(NULL, ":");
 	printf("p: %s\n", p);
 	memcpy(cur_process.type, p, strlen(p));
@@ -174,11 +170,8 @@ void str_copy_delim(char *src)
 void parse_record(char *cmd_buf)
 {
 	int ret;
-	//char cmd_buf[BUF_LEN];
-	//char exec_buf[READ_LINE];
 
 	memset(cmd_buf, 0, BUF_LEN);
-	//memset(exec_buf, 0, BUF_LEN);
 
 	fprintf(stderr, "开始语音识别...\n");
 	ret = SpeechRecog(INPUT_FILE, OUTPUT_FILE);
@@ -189,17 +182,8 @@ void parse_record(char *cmd_buf)
 	fprintf(stderr, "语音识别结束， 成功！...\n");
 
 	get_cmd_buf(cmd_buf);
-	/*
-	if ( cmd_buf != NULL ) {
-		search_str(cmd_buf, exec_buf);
-	}
-	*/
-	/*		
-	if (exec_buf != NULL) {
-		system(exec_buf);
-	}
-	*/
 	sys_err("parse record : %s\n", cmd_buf);
+	
 	return;
 }
 
@@ -216,7 +200,6 @@ int is_process_open(char *buf)
 {
 	FILE *fp = NULL;
 	int i = 0;
-	//char tmp[4];
 	char sys_buf[READ_LINE];
 
 	fprintf(stderr, "is_process_open start...\n" );
@@ -226,7 +209,6 @@ int is_process_open(char *buf)
 	system(sys_buf);
 
 	fp = fopen("./tmp/rows", "r");
-	//fread(tmp, 1, 4, fp);
 	fscanf(fp, "%d", &i);
 	fclose(fp);
 	printf("%d\n", --i);
