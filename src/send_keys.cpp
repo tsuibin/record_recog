@@ -22,7 +22,8 @@ void set_focus()
 	}
 	sys_err("create display ok!\n");
 	
-	get_wid(cur_process.name);
+	//get_wid(cur_process.name);
+	get_wid(cur_process.item);
 	if ( match_wid == (Window)0 ) {
 		sys_err("match wid failed...\n");
 		XCloseDisplay(disp);
@@ -52,7 +53,8 @@ void exec_command(int *keys)
 	}
 	sys_err("create display ok!\n");
 	
-	get_wid(cur_process.name);
+	//get_wid(cur_process.name);
+	get_wid(cur_process.item);
 	if ( match_wid == (Window)0 ) {
 		sys_err("match wid failed...\n");
 		XCloseDisplay(disp);
@@ -171,6 +173,7 @@ void get_wid(char *name)
 		return ;
 	}
 	
+	sys_says("get_wid name : %s\n", name);
 	sys_wm_wid();
 	sys_xdot_wid(name);
 	
@@ -193,7 +196,7 @@ void get_wid(char *name)
 		if ( wm_buf == 0 ) {
 			continue;
 		}
-		fscanf(fwm, "0x%lx", &wm);
+		sscanf(wm_buf, "0x%lx", &wm);
 		//sys_says("wm : %lu\n", wm);
 		
 		fseek(fxdot, 0, SEEK_SET);
@@ -202,7 +205,7 @@ void get_wid(char *name)
 			if ( xdot_buf == 0 ) {
 				continue;
 			}
-			fscanf(fxdot, "%lu", &xdot);
+			sscanf(xdot_buf, "%lu", &xdot);
 			//sys_says("xdot : %lu\n", xdot);
 			
 			if ( wm == xdot ) {
