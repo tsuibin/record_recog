@@ -20,4 +20,11 @@
 #define BUF_LEN	32
 #define READ_LINE	80
 
+
+struct process_info {
+	char name[BUF_LEN];
+	char config[READ_LINE];
+	char type[BUF_LEN];
+};
+
 #endif

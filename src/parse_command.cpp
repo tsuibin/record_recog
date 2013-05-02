@@ -1,7 +1,6 @@
 #include "parse_command.h"
 
-extern char cur_process_name[BUF_LEN];
-extern char cur_config_name[READ_LINE];
+extern struct process_info cur_process;
 
 void get_cmd_buf(char *buf)
 {
@@ -125,9 +124,9 @@ void search_index(char *cmd_buf)
 			fclose(fp);
 			fp = NULL;
 			
-			str_copy_delim(exec_buf, ':');
-			fprintf(stderr, "cur_process: %s\n", cur_process_name);
-			fprintf(stderr, "cur_config: %s\n", cur_config_name);
+			str_copy_delim(exec_buf);
+			fprintf(stderr, "cur_process: %s\n", cur_process.name);
+			fprintf(stderr, "cur_config: %s\n", cur_process.config);
 			break;
 		}
 	}
@@ -136,34 +135,34 @@ void search_index(char *cmd_buf)
 	}
 }
 
-void str_copy_delim(char *src, char delim)
+void str_copy_delim(char *src)
 {
-	int i = 0;
-	int flag = 0;
-	int len = strlen(src);
-	char *ptr = src;
+	char *p = NULL;
+	//char *tmp = NULL;
+	int len = 0;
 	
-	memset(cur_process_name, 0, BUF_LEN);
-	memset(cur_config_name, 0, READ_LINE);
+	memset(&cur_process, 0, sizeof(cur_process));
 	if (src == NULL) {
 		return ;
 	}
 	
-	for ( i = 0; i < len; i++ ) {
-		if ( *ptr == delim ) {
-			flag = 1;
-			break;;
-		}
-		ptr++;
-	}
+	p = strtok(src, ":");
+	memcpy(cur_process.name, p, strlen(p));
+	printf("name : %s\n", cur_process.name);
 	
-	if ( flag ) {
-		flag = 0;
-		memcpy(cur_process_name, src, i);
-		memcpy(cur_config_name, ptr + 1, len -1 - i);
-		if ( cur_config_name[len -2 - i] == '\n' ) {
-			cur_config_name[len -2 - i] = '\0';
-		}
+	p = strtok(NULL, ":");
+	memcpy(cur_process.config, p, strlen(p));
+	printf("config: %s\n", cur_process.config);
+	
+	//tmp = p + strlen(p) + 1;
+	//memcpy(cur_process.type, tmp, strlen(tmp));
+	p = strtok(NULL, ":");
+	memcpy(cur_process.type, p, strlen(p));
+	printf("type: %s\n", cur_process.type);
+	
+	len = strlen(cur_process.type);
+	if ( cur_process.type[len -1] == '\n' ) {
+		cur_process.type[len -1] = '\0';
 	}
 }
 
@@ -201,7 +200,7 @@ void parse_record(char *cmd_buf)
 
 int is_config_set()
 {
-	if (cur_config_name[0] == '\0' ) {
+	if (cur_process.config[0] == '\0' ) {
 		return 0;
 	} else {
 		return 1;
@@ -230,9 +229,9 @@ int is_process_open(char *buf)
 	fprintf(stderr, "is_process_open end...\n" );
 	if ( i > 0 ) {
 		return 1;
-	} else {
-		return 0;
 	}
+	
+	return 0;
 }
 
 unsigned long get_pid_via_name( char *process_name )
@@ -241,6 +240,7 @@ unsigned long get_pid_via_name( char *process_name )
 	unsigned long pid = 0;
 	FILE *fp = NULL;
 	
+	printf("get_pid_via_name : %s\n", process_name);
 	sprintf( buf, "ps aux | grep %s | sed -n 1p | awk '{print $2}' > pid_tmp", 
 			process_name );
 	system(buf);
@@ -251,6 +251,7 @@ unsigned long get_pid_via_name( char *process_name )
 	}
 	fscanf(fp, "%lud", &pid);
 	fclose(fp);
+	printf("get_pid_via_name : %lu\n", pid);
 	
 	return pid;
 }

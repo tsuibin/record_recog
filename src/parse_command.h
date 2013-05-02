@@ -17,11 +17,16 @@ void clear_punctuation(char *punc);	//清理标点
 void search_str(char *cmd_buf, char *exec_buf, char *conf_file);
 /* 检索 index 文件 */
 void search_index(char *cmd_buf);
-void str_copy_delim(char *src, char delim);
+void str_copy_delim(char *src);
 
 /* 程序是否打开 */
 int is_process_open(char *buf);
 
 unsigned long get_pid_via_name( char *process_name );
+
+void no_set_config(char *cmd_buf, char *exec_buf);
+void has_set_config(char *cmd_buf, char *exec_buf, int *keys);
+
+void music_type_func(char *exec_buf);
 
 #endif
