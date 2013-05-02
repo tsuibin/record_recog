@@ -7,8 +7,7 @@ int keys_len = 0;
 int first_record;
 int record_abort;
 
-char cur_process_name[BUF_LEN];
-char cur_config_name[READ_LINE];
+struct process_info cur_process;
 
 void open_process(char *cmd_buf, char *exec_buf, char *process_name)
 {
@@ -53,10 +52,10 @@ int main()
 		}
 		
 		search_index(cmd_buf);
-		if ( cur_process_name == NULL ) {
+		if ( cur_process.name == NULL ) {
 			break;
 		}			
-		open_process(cmd_buf, exec_buf, cur_process_name);
+		open_process(cmd_buf, exec_buf, cur_process.name);
 		
 		while (!test_flag) {
 			memset(cmd_buf, 0, BUF_LEN);
@@ -70,12 +69,12 @@ int main()
 				break;
 			}
 			
-			search_str(cmd_buf, exec_buf, cur_config_name);
+			search_str(cmd_buf, exec_buf, cur_process.name);
 			if ( exec_buf[0] != '\0' ) {
 				//system(exec_buf);
 				fprintf(stderr, "exec_buf != NULL\n");
 				strtok_num(exec_buf, keys);
-				exec_command(keys, get_pid_via_name(cur_process_name));
+				exec_command(keys, get_pid_via_name(cur_process.name));
 			}
 			//sleep(1);
 		}

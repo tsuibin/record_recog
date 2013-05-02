@@ -25,15 +25,15 @@ void activate_window(unsigned long pid)
 	
 	//get_wid_via_pid(disp, pid);
 	//get_wid_via_pid(cur_process.name);
-	if ( match_wid == (Window)0 ) {
+	/*if ( match_wid == (Window)0 ) {
 		sys_err("match wid failed...\n");
 		//XCloseDisplay(disp);
 		return;
 	}
-	sys_err("match_wid : %lu\n", match_wid);
+	sys_err("match_wid : %lu\n", match_wid);*/
 	
 	/* 设置指定窗口为焦点 */
-	sprintf(buf, "wmctrl -i -a %lu", match_wid);
+	sprintf(buf, "wmctrl -a %s", cur_process.item);
 	system(buf);
 }
 
@@ -49,8 +49,9 @@ void set_focus(unsigned long pid)
 	}
 	sys_err("create display ok!\n");
 	
-	get_wid_via_pid(disp, pid);
+	//get_wid_via_pid(disp, pid);
 	//get_wid_via_pid(cur_process.name);
+	get_wid(cur_process.name);
 	if ( match_wid == (Window)0 ) {
 		sys_err("match wid failed...\n");
 		XCloseDisplay(disp);
@@ -83,8 +84,9 @@ void exec_command(int *keys, unsigned long pid)
 	}
 	sys_err("create display ok!\n");
 	
-	get_wid_via_pid(disp, pid);
+	//get_wid_via_pid(disp, pid);
 	//get_wid_via_pid(cur_process.name);
+	get_wid(cur_process.name);
 	if ( match_wid == (Window)0 ) {
 		sys_err("match wid failed...\n");
 		XCloseDisplay(disp);
@@ -139,10 +141,10 @@ void get_wid_via_pid( Display *display, unsigned long pid )
     FILE *fp = NULL;
     char buf[80];
     
-    sprintf(buf, "xdotool search --name %s | tail -1 > xdot", name);
+    sprintf(buf, "xdotool search --name %s | tail -1 > ./tmp/xdot", name);
     system(buf);
     
-    fp = fopen("xdot", "r");
+    fp = fopen("./tmp/xdot", "r");
     if ( fp == NULL ) {
 		fprintf(stderr, "get wid failed...\n");
 		return ;
@@ -177,7 +179,7 @@ void search_window(Display *display, Window w, Atom atomPID, unsigned long pid)
     	return;
     }*/
     
-    sys_err("XGetWindowProperty...\n");
+    //sys_err("XGetAtomName : %s\n", XGetAtomName(display, atomPID));
     if(Success == XGetWindowProperty(display, w, atomPID, 0, 
 		MAX_PROPERTY_VALUE_LEN / 4, False, XA_CARDINAL, &type, &format, 
 		&nItems, &bytesAfter, &propPID))
@@ -336,4 +338,85 @@ void strtok_num(char *exec_buf, int *nums)
 		//keys_len++;
 	}
 	*nums = 0;
+}
+
+void get_wid(char *name)
+{
+	int flag = 0;
+	FILE *fwm = NULL;
+	FILE *fxdot = NULL;
+	unsigned long int wm = 0;
+	unsigned long int xdot = 0;
+	char wm_buf[80];
+	char xdot_buf[80];
+	
+	if ( name == NULL ) {
+		return ;
+	}
+	
+	sys_wm_wid();
+	sys_xdot_wid(name);
+	
+	fwm = fopen("./tmp/wm_wid", "r");
+	if ( fwm == NULL ) {
+		sys_err("get_wid open file wm_wid failed...\n");
+		return ;
+	}
+	fxdot = fopen("./tmp/xdot_wid", "r");
+	if ( fxdot == NULL ) {
+		sys_err("get_wid open file xdot_wid failed...\n");
+		return ;
+	}
+	
+	memset(wm_buf, 0, 80);
+	memset(xdot_buf, 0, 80);
+	
+	while (!feof(fwm)) {
+		fgets(wm_buf, 80, fwm);
+		if ( wm_buf == 0 ) {
+			continue;
+		}
+		fscanf(fwm, "0x%lx", &wm);
+		//sys_says("wm : %lu\n", wm);
+		
+		fseek(fxdot, 0, SEEK_SET);
+		while(!feof(fxdot)) {
+			fgets(xdot_buf, 80, fxdot);
+			if ( xdot_buf == 0 ) {
+				continue;
+			}
+			fscanf(fxdot, "%lu", &xdot);
+			//sys_says("xdot : %lu\n", xdot);
+			
+			if ( wm == xdot ) {
+				flag = 1;
+				match_wid = (Window)wm;
+				//sys_says("wm == xdot\n", xdot);
+				break;
+			}
+		}
+		
+		if ( flag ) {
+			flag = 0;
+			break;
+		}
+	}
+	fclose(fwm);
+	fclose(fxdot);
+}
+
+void sys_wm_wid()
+{
+	char buf[] = "wmctrl -l | sed  \'1,3d\' | awk \'{print $1}\' > ./tmp/wm_wid";
+	
+	system(buf);
+}
+
+void sys_xdot_wid(char *name)
+{
+	char buf[80];
+	
+	memset(buf, 0, 80);
+	sprintf(buf, "xdotool search --name %s > ./tmp/xdot_wid", name);
+	system(buf);
 }

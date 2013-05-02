@@ -26,4 +26,8 @@ void get_wid_via_pid( Display *display, unsigned long pid );
 //void search_window(Display *display, Window w, unsigned long pid);
 void search_window(Display *display, Window w, Atom atomPID, unsigned long pid);
 
+void get_wid(char *name);
+void sys_wm_wid();
+void sys_xdot_wid(char *name);
+
 #endif

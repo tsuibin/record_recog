@@ -151,12 +151,17 @@ void str_copy_delim(char *src)
 	printf("name : %s\n", cur_process.name);
 	
 	p = strtok(NULL, ":");
+	memcpy(cur_process.item, p, strlen(p));
+	printf("item: %s\n", cur_process.item);
+	
+	p = strtok(NULL, ":");
 	memcpy(cur_process.config, p, strlen(p));
 	printf("config: %s\n", cur_process.config);
 	
 	//tmp = p + strlen(p) + 1;
 	//memcpy(cur_process.type, tmp, strlen(tmp));
 	p = strtok(NULL, ":");
+	printf("p: %s\n", p);
 	memcpy(cur_process.type, p, strlen(p));
 	printf("type: %s\n", cur_process.type);
 	
@@ -216,11 +221,11 @@ int is_process_open(char *buf)
 
 	fprintf(stderr, "is_process_open start...\n" );
 	memset(sys_buf, 0, READ_LINE);
-	sprintf(sys_buf, "pgrep -f  %s | wc -l > rows", buf );
+	sprintf(sys_buf, "pgrep -f  %s | wc -l > ./tmp/rows", buf );
 	sys_err("sys_buf : %s\n", sys_buf);
 	system(sys_buf);
 
-	fp = fopen("rows", "r");
+	fp = fopen("./tmp/rows", "r");
 	//fread(tmp, 1, 4, fp);
 	fscanf(fp, "%d", &i);
 	fclose(fp);
@@ -241,11 +246,11 @@ unsigned long get_pid_via_name( char *process_name )
 	FILE *fp = NULL;
 	
 	printf("get_pid_via_name : %s\n", process_name);
-	sprintf( buf, "ps aux | grep %s | sed -n 1p | awk '{print $2}' > pid_tmp", 
+	sprintf( buf, "ps aux | grep %s | sed -n 1p | awk '{print $2}' > ./tmp/pid", 
 			process_name );
 	system(buf);
 	
-	if ( (fp = fopen("pid_tmp", "r")) == NULL ) {
+	if ( (fp = fopen("./tmp/pid", "r")) == NULL ) {
 		sys_err("get_pid failed...\n");
 		return 0;
 	}

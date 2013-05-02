@@ -15,15 +15,17 @@
 #define OPEN_FILE	"conf/open.conf"
 
 #define sys_err(args ...) {fprintf(stderr, args);}
+#define sys_says(args ...) {fprintf(stdout, args);}
 
 #define KEY_LEN	6
 #define BUF_LEN	32
-#define READ_LINE	80
+#define READ_LINE	1024
 
 
 struct process_info {
 	char name[BUF_LEN];
-	char config[READ_LINE];
+	char item[BUF_LEN];
+	char config[BUF_LEN];
 	char type[BUF_LEN];
 };
 
