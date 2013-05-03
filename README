@@ -14,7 +14,6 @@ MSCLIBS_PATH : 为科大讯飞库的位置。
 
 依赖依赖(64位)：
 wmctrl
-xdotool
 ia32-libs
 gcc-multilib
 lib32asound2-dev

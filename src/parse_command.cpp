@@ -199,22 +199,23 @@ int is_config_set()
 int is_process_open(char *buf)
 {
 	FILE *fp = NULL;
-	int i = 0;
+	char ret_buf[READ_LINE];
 	char sys_buf[READ_LINE];
 
 	fprintf(stderr, "is_process_open start...\n" );
 	memset(sys_buf, 0, READ_LINE);
-	sprintf(sys_buf, "pgrep -f  %s | wc -l > ./tmp/rows", buf );
+	sprintf(sys_buf, "pidof  %s > ./tmp/rows", buf );
 	sys_err("sys_buf : %s\n", sys_buf);
 	system(sys_buf);
 
+	memset(ret_buf, 0, READ_LINE);
 	fp = fopen("./tmp/rows", "r");
-	fscanf(fp, "%d", &i);
+	fscanf(fp, "%s", ret_buf);
 	fclose(fp);
-	printf("%d\n", --i);
 	
 	fprintf(stderr, "is_process_open end...\n" );
-	if ( i > 0 ) {
+	if ( ret_buf[0] != '\0' ) {
+		printf("ret : %s\n", ret_buf);
 		return 1;
 	}
 	
