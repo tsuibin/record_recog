@@ -163,11 +163,8 @@ void get_wid(char *name)
 {
 	int flag = 0;
 	FILE *fwm = NULL;
-	FILE *fxdot = NULL;
 	unsigned long int wm = 0;
-	unsigned long int xdot = 0;
-	char wm_buf[80];
-	char xdot_buf[80];
+	char wm_buf[READ_LINE];
 	
 	if ( name == NULL ) {
 		return ;
@@ -175,68 +172,66 @@ void get_wid(char *name)
 	
 	sys_says("get_wid name : %s\n", name);
 	sys_wm_wid();
-	sys_xdot_wid(name);
 	
 	fwm = fopen("./tmp/wm_wid", "r");
 	if ( fwm == NULL ) {
 		sys_err("get_wid open file wm_wid failed...\n");
 		return ;
 	}
-	fxdot = fopen("./tmp/xdot_wid", "r");
-	if ( fxdot == NULL ) {
-		sys_err("get_wid open file xdot_wid failed...\n");
-		return ;
-	}
 	
-	memset(wm_buf, 0, 80);
-	memset(xdot_buf, 0, 80);
-	
+	memset(wm_buf, 0, READ_LINE);
 	while (!feof(fwm)) {
-		fgets(wm_buf, 80, fwm);
+		fgets(wm_buf, READ_LINE, fwm);
 		if ( wm_buf == 0 ) {
 			continue;
 		}
-		sscanf(wm_buf, "0x%lx", &wm);
-		//sys_says("wm : %lu\n", wm);
-		
-		fseek(fxdot, 0, SEEK_SET);
-		while(!feof(fxdot)) {
-			fgets(xdot_buf, 80, fxdot);
-			if ( xdot_buf == 0 ) {
-				continue;
-			}
-			sscanf(xdot_buf, "%lu", &xdot);
-			//sys_says("xdot : %lu\n", xdot);
-			
-			if ( wm == xdot ) {
-				flag = 1;
-				match_wid = (Window)wm;
-				//sys_says("wm == xdot\n", xdot);
-				break;
-			}
-		}
-		
-		if ( flag ) {
-			flag = 0;
+		if ( index_str(name, wm_buf) == 0 ) {
+			sscanf(wm_buf, "0x%lx", &wm);
+			//sys_says("wm : %lu\n", wm);
+			match_wid = (Window)wm;
 			break;
 		}
 	}
 	fclose(fwm);
-	fclose(fxdot);
 }
 
 void sys_wm_wid()
 {
-	char buf[] = "wmctrl -l | sed  \'1,3d\' | awk \'{print $1}\' > ./tmp/wm_wid";
+	char buf[] = "wmctrl -lx | sed  \'1,3d\' | awk \'{print $1, $3}\' > \
+				  ./tmp/wm_wid";
 	
 	system(buf);
 }
 
-void sys_xdot_wid(char *name)
+int index_str(char *name, char *src)
 {
-	char buf[80];
-	
-	memset(buf, 0, 80);
-	sprintf(buf, "xdotool search --name %s > ./tmp/xdot_wid", name);
-	system(buf);
+	int i = 0;
+	int flag = 0;
+	int src_len = 0;
+	int name_len = 0;
+
+	if ( name == NULL || src == NULL ) {
+		sys_says("index argument error...\n");
+		return -1;
+	}
+
+	src_len = strlen(src);
+	name_len = strlen(name);
+	while ( src[i] != '\0' ) {
+		if ( i + name_len > src_len ) {
+			break;
+		}
+
+		if ( strncmp( name, src + i, name_len ) == 0 ) {
+			flag = 1;
+			break;
+		}
+		i++;
+	}
+
+	if ( !flag ) {
+		return -1;
+	}
+
+	return 0;
 }
