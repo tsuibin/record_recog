@@ -203,13 +203,14 @@ int is_process_open(char *buf)
 	char sys_buf[READ_LINE];
 
 	fprintf(stderr, "is_process_open start...\n" );
+	system("ps a -U $USER | awk \'{print $5,$NF}\' > /tmp/ps_out");
 	memset(sys_buf, 0, READ_LINE);
-	sprintf(sys_buf, "pidof  %s > ./tmp/rows", buf );
+	sprintf(sys_buf, "grep  %s /tmp/ps_out > /tmp/grep_out", buf );
 	sys_err("sys_buf : %s\n", sys_buf);
 	system(sys_buf);
 
 	memset(ret_buf, 0, READ_LINE);
-	fp = fopen("./tmp/rows", "r");
+	fp = fopen("/tmp/grep_out", "r");
 	fscanf(fp, "%s", ret_buf);
 	fclose(fp);
 	
@@ -229,11 +230,11 @@ unsigned long get_pid_via_name( char *process_name )
 	FILE *fp = NULL;
 	
 	printf("get_pid_via_name : %s\n", process_name);
-	sprintf( buf, "ps aux | grep %s | sed -n 1p | awk '{print $2}' > ./tmp/pid", 
+	sprintf( buf, "ps aux | grep %s | sed -n 1p | awk '{print $2}' > /tmp/pid", 
 			process_name );
 	system(buf);
 	
-	if ( (fp = fopen("./tmp/pid", "r")) == NULL ) {
+	if ( (fp = fopen("/tmp/pid", "r")) == NULL ) {
 		sys_err("get_pid failed...\n");
 		return 0;
 	}
