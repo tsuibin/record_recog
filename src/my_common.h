@@ -13,6 +13,7 @@
 
 #define INDEX_FILE	"conf/index.conf"
 #define OPEN_FILE	"conf/open.conf"
+#define CMD_FILE	"conf/command.conf"
 
 #define sys_err(args ...) {fprintf(stderr, args);}
 #define sys_says(args ...) {fprintf(stdout, args);}

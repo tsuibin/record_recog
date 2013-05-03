@@ -121,10 +121,23 @@ void has_set_config(char *cmd_buf, char *exec_buf, int *keys)
 				music_type_func(exec_buf);
 			}
 		} else if ( strncmp(cur_process.type, "cmd", 3 ) == 0 ) {
-			
+			//search_str(cmd_buf, exec_buf, OPEN_FILE);
+			if (exec_buf[0] != '\0' ) {
+				system(exec_buf);
+			}
 		}
 	} else {
-		no_set_config(cmd_buf, exec_buf);
+		if ( strncmp(cur_process.type, "multi", 5 ) == 0 ) {
+			memset(exec_buf, 0, READ_LINE);
+			search_str(cmd_buf, exec_buf, CMD_FILE);
+			if (exec_buf[0] != '\0' ) {
+				system(exec_buf);
+			} else {
+				no_set_config(cmd_buf, exec_buf);
+			}
+		} else {
+			no_set_config(cmd_buf, exec_buf);
+		}
 	}
 }
 
