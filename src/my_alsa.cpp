@@ -1,5 +1,4 @@
 #include "my_alsa.h"
-#include "record_recog.h"
 
 extern int first_record;
 extern int record_abort;
@@ -134,8 +133,8 @@ int MySndRecord(int timenum, const char *output_file)
 	while (loops > 0) {
 		loops--;
 		if ( loops == 0 ) {
-			if (!record_abort) {
-				loops = 3;
+			if (record_abort) {
+				loops = 2;
 			}
 		}
 		MySndReadi(handle, buffer, frames);
@@ -150,6 +149,7 @@ int MySndRecord(int timenum, const char *output_file)
 	fclose(fp_out);
 	MySndEnd(handle);
 	free(buffer);
+	fprintf(stderr, "录音完毕...\n");
 
 	return 0;
 }

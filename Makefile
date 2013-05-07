@@ -15,11 +15,8 @@ LIBS	:= -L${LIBSPATH} -I${INCSPATH} -lmsc -ldl -lpthread -lasound
 
 vpath %.cpp ${SRCPATH}
 
-#OBJS := test_alsa.o my_alsa.o
-#OBJS := my_qisr.o test_qisr.o
-#OBJS := my_qisr.o my_alsa.o record_test.o
 #OBJS := my_qisr.o my_alsa.o main_test.o parse_command.o send_keys.o
-OBJS := my_qisr.o my_alsa.o record_recog.o parse_command.o send_keys.o music_call.o
+OBJS := my_qisr.o my_alsa.o parse_speech.o activate_win.o send_keys.o music_func.o exec_cmd.o main.o
 
 all : ${PROG_NAME}
 
