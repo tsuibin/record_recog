@@ -23,3 +23,5 @@ libxtst-dev:i386
 libxmu-dev:i386
 libdbus-1-dev:i386
 libdbus-glib-1-dev:i386
+
+程序设计思想请见：speech_struct.pdf
