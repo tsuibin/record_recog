@@ -1,0 +1,117 @@
+#include "parse_speech.h"
+
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <json/json.h>
+
+using namespace std;
+
+extern struct process_info cur_process;
+
+int ParseJsonFromFile(const char *buf, char *exec_buf, const char *file)
+{
+	Json::Reader reader;
+	Json::Value  index;
+	std::string  str;
+	int i;
+	int flag = 0;
+	int arraylen;
+	char tmp[BUF_LEN];
+
+	std::ifstream is;
+	is.open(file, std::ios::binary);
+
+	if ( reader.parse(is, index) ) {
+		arraylen = index["index"].size();
+		std::cout<<"arraylen : "<<arraylen<<endl;
+
+		for ( i = 0; i < arraylen; i++ ) {
+			str = index["index"][i]["speech"].asString();
+			memset(tmp, 0, BUF_LEN);
+			strcpy(tmp, str.c_str());
+			printf("tmp : %s\tlen : %u\n", tmp, strlen(tmp));
+
+			if ( memcmp(buf, tmp, strlen(buf)) == 0 ) {
+				memset( exec_buf, 0, BUF_LEN);
+				str = index["index"][i]["cmd"].asString();
+				memset(tmp, 0, BUF_LEN);
+				strcpy(tmp, str.c_str());
+				memcpy(exec_buf, tmp, strlen(tmp));
+				
+				flag = 1;
+				break;
+			}
+		}
+	}
+	is.close();
+	
+	if (!flag) {
+		return 0;
+	}
+
+	return 1;
+}
+
+int ParseJsonIndex(const char *buf)
+{
+	Json::Reader reader;
+	Json::Value  index;
+	std::string  str;
+	int i;
+	int flag = 0;
+	int arraylen;
+	char tmp[BUF_LEN];
+
+	printf("buf : %s\tlen : %u\n", buf, strlen(buf));
+	std::ifstream is;
+	is.open(INDEX_JSON, std::ios::binary);
+
+	if ( reader.parse(is, index) ) {
+		arraylen = index["index"].size();
+		std::cout<<"arraylen : "<<arraylen<<endl;
+
+		for ( i = 0; i < arraylen; i++ ) {
+			str = index["index"][i]["speech"].asString();
+			//std::cout<<"speech : "<<str<<endl;
+			
+			memset(tmp, 0, BUF_LEN);
+			strcpy(tmp, str.c_str());
+			printf("tmp : %s\tlen : %u\n", tmp, strlen(tmp));
+			
+			if ( memcmp(buf, tmp, strlen(buf)) == 0 ) {
+				memset( &cur_process, 0, sizeof(cur_process));
+				
+				str = index["index"][i]["name"].asString();
+				memset(tmp, 0, BUF_LEN);
+				strcpy(tmp, str.c_str());
+				memcpy(cur_process.name, tmp, strlen(tmp));
+				
+				str = index["index"][i]["title"].asString();
+				memset(tmp, 0, BUF_LEN);
+				strcpy(tmp, str.c_str());
+				memcpy(cur_process.item, tmp, strlen(tmp));
+				
+				str = index["index"][i]["config"].asString();
+				memset(tmp, 0, BUF_LEN);
+				strcpy(tmp, str.c_str());
+				memcpy(cur_process.config, tmp, strlen(tmp));
+				
+				str = index["index"][i]["type"].asString();
+				memset(tmp, 0, BUF_LEN);
+				strcpy(tmp, str.c_str());
+				memcpy(cur_process.type, tmp, strlen(tmp));
+				
+				flag = 1;
+				break;
+			}
+		}
+	}
+	is.close();
+	
+	if (!flag) {
+		return 0;
+	}
+
+	return 1;
+}

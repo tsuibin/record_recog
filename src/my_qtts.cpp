@@ -1,5 +1,7 @@
 #include "my_qtts.h"
 
+extern int synth_first;
+
 void MyInit(const char *configs)
 {
 	int ret;
@@ -25,6 +27,9 @@ void MyTextPut(const char *sessionId, const char *synthText,
 	}
 }
 
+/*
+ * 语音合成
+ */
 int SpeechSynth(const char *text, const char *outFile)
 {
 	const char *configs = NULL;
@@ -71,7 +76,12 @@ int SpeechSynth(const char *text, const char *outFile)
 	/*
 	 * 获取合成的音频
 	 */
-	f_speech = fopen(outFile, "wb");
+	if ( synth_first ) {
+		synth_first = 0;
+		f_speech = fopen(outFile, "wb");
+	} else {
+		f_speech = fopen(outFile, "ab");
+	}
 	if ( f_speech == NULL ) {
 		printf( "Cannot open file \"synth_speech.pcm\"\n" );
 		char tmp[] = "open file failed\n";

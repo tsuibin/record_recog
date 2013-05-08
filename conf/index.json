@@ -1,0 +1,34 @@
+/*语音输入 	程序名	标题   配置文件   命令类型*/
+{
+	"index":
+	[
+		{
+			"speech":"终端",
+			"name":"gnome-terminal",
+			"title":"Gnome-terminal",
+			"config":"./conf/terminal.json",
+			"type":"keys"
+		},
+		{
+			"speech":"浏览器",
+			"name":"firefox",
+			"title":"Firefox",
+			"config":"./conf/firefox.json",
+			"type":"multi"
+		},
+		{
+			"speech":"文件管理器",
+			"name":"nautilus",
+			"title":"Nautilus",
+			"config":"./conf/nautilus.json",
+			"type":"keys"
+		},
+		{
+			"speech":"播放音乐",
+			"name":"deepin-music-player",
+			"title":"Deepin-music-player",
+			"config":"./conf/deepin-music-player.json",
+			"type":"func"
+		}
+	]
+}

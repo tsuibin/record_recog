@@ -1,5 +1,8 @@
 #include "exec_func.h"
 
+/*
+ * 调用 deepin-music-player 函数
+ */
 void music_type_func(char *exec_buf)
 {
 	//sys_err("music func\n");
@@ -39,6 +42,9 @@ void music_type_func(char *exec_buf)
 	}
 }
 
+/*
+ * 播放/暂停
+ */
 int MusicPlayPause()
 {
 	char buf[] = "dbus-send --print-reply --type=method_call \
@@ -53,6 +59,9 @@ int MusicPlayPause()
 	return 0;
 }
 
+/*
+ * 快进
+ */
 int MusicForward()
 {
 	char buf[] = "dbus-send --print-reply --type=method_call \
@@ -67,6 +76,9 @@ int MusicForward()
 	return 0;
 }
 
+/*
+ * 上一首
+ */
 int MusicPrev()
 {
 	char buf[] = "dbus-send --print-reply --type=method_call \
@@ -81,6 +93,9 @@ int MusicPrev()
 	return 0;
 }
 
+/*
+ * 下一首
+ */
 int MusicNext()
 {
 	char buf[] = "dbus-send --print-reply --type=method_call \
@@ -95,6 +110,9 @@ int MusicNext()
 	return 0;
 }
 
+/*
+ * 停止
+ */
 int MusicStop()
 {
 	char buf[] = "dbus-send --print-reply --type=method_call \
@@ -109,6 +127,9 @@ int MusicStop()
 	return 0;
 }
 
+/*
+ * 退出
+ */
 int MusicQuit()
 {
 	char buf[] = "dbus-send --print-reply --type=method_call \
@@ -123,6 +144,9 @@ int MusicQuit()
 	return 0;
 }
 
+/*
+ * 重放
+ */
 int MusicRewind()
 {
 	char buf[] = "dbus-send --print-reply --type=method_call \

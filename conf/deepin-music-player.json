@@ -1,0 +1,39 @@
+/* 语音输入   命令 */
+{
+	"index":
+	[
+		{
+			"speech":"播放",
+			"cmd":"PlayPause"
+		},
+		{
+			"speech":"暂停",
+			"cmd":"PlayPause"
+		},
+		{
+			"speech":"上一首",
+			"cmd":"Prev"
+		},
+		{
+			"speech":"下一首",
+			"cmd":"Next"
+		},
+		{
+			"speech":"快进",
+			"cmd":"Forward"
+		},
+		{
+			"speech":"重放",
+			"cmd":"Rewind"
+		},
+		{
+			"speech":"停止",
+			"cmd":"Stop"
+		},
+		
+		{
+			"speech":"退出",
+			"cmd":"Quit"
+		}
+	]
+}

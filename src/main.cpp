@@ -20,6 +20,7 @@ int record_abort = 0;
 #include <sys/stat.h>
 #include <sys/param.h>
 
+/* 守护进程 */
 void init_deamon();
 
 int main()
@@ -33,8 +34,6 @@ int main()
 	int keys[KEY_LEN];
 	char cmd_buf[BUF_LEN];
 	char exec_buf[READ_LINE];
-
-	//init_deamon();
 	
 	memset(keys, 0, KEY_LEN * sizeof(int));
 	memset(cmd_buf, 0, BUF_LEN);
@@ -56,7 +55,8 @@ int main()
 	}
 
 	//pthread_t recd_start;
-	
+
+	//init_deamon();
 	while (1) {
 		memset(&myinput, 0, sizeof(myinput));
 		flag = read(fd, &myinput, sizeof(myinput));
@@ -107,6 +107,9 @@ int main()
 	return 0;
 }
 
+/*
+ * 录音线程
+ */
 void *record_start(void *arg)
 {
 	int ret = 0;
@@ -122,6 +125,9 @@ void *record_start(void *arg)
 	pthread_exit(NULL);
 }
 
+/*
+ * 获取键盘设备名
+ */
 void get_dev_id(char *id_name)
 {
 	FILE *fp = NULL;
@@ -140,6 +146,9 @@ void get_dev_id(char *id_name)
 	sys_says("id_name : %s\n", id_name);
 }
 
+/*
+ * 初始化守护进程
+ */
 void init_deamon()
 {
 	int i;

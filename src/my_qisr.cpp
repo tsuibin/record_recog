@@ -25,6 +25,9 @@ void MyAudioWrite(const char *sessionId, const void *recogAudio, unsigned
 	}
 }
 
+/*
+ * 语音识别
+ */
 int SpeechRecog(const char *inFile, const char *outFile)
 {
 	const char *configs = NULL;
@@ -35,7 +38,7 @@ int SpeechRecog(const char *inFile, const char *outFile)
 	FILE		*fOut = NULL;
 	int			audioStatus = 0;
 	int			epStatus = 0;
-	int			recStatus = 0;
+	//int			recStatus = 0;
 	int			rsltStatus = 0;
 	const char *recResult = NULL;
 	unsigned int audioLen = 0;

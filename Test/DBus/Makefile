@@ -11,9 +11,8 @@ LIBS	:= `pkg-config --libs dbus-1`
 #vpath %.cpp ${SRCPATH}
 
 #OBJS := dbus1.o
-OBJS := method_call.o
-#OBJS := my_qisr.o test_qisr.o
-#OBJS := my_qisr.o my_alsa.o test_record.o
+#OBJS := method_call.o
+OBJS := test_dbus.o
 
 all : ${PROG_NAME}
 

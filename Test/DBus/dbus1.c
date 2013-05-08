@@ -34,6 +34,7 @@ void my_dbus_get(DBusConnection *conn, DBusError *err)
 	conn = dbus_bus_get(DBUS_BUS_SESSION, err);
 	parse_dbus_err(err);
 	if ( conn == NULL ) {
+		sys_says("connection failed...\n");
 		exit(-1);
 	}
 	sys_says("connection OK...\n");
@@ -53,14 +54,10 @@ void my_dbus_init(DBusConnection *conn)
 	conn = dbus_bus_get(DBUS_BUS_SESSION, &err);
 	parse_dbus_err(&err);
 	if ( conn == NULL ) {
+		sys_says("connection failed...\n");
 		exit(-1);
 	}
-	sys_says("connection OK...\n");
-
-	if ( conn == NULL ) {
-		sys_says("connection NULL...\n");
-		exit(-1);
-	}
+	
 	sys_says("request connection...\n");
 	/* request a name on the bus */
 	ret = dbus_bus_request_name(conn, "com.linuxdeepin.DMusic", 
@@ -68,8 +65,8 @@ void my_dbus_init(DBusConnection *conn)
 	parse_dbus_err(&err);
 	if ( ret != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER ) {
 		sys_says("connection close...\n");
-		//dbus_connection_close(conn);
-		//exit(-1);
+		dbus_connection_close(conn);
+		exit(-1);
 	}
 
 	//dbus_connection_close(conn);

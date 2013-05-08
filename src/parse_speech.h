@@ -14,4 +14,8 @@ void search_str(char *cmd_buf, char *exec_buf, char *conf_file);
 void search_index(char *cmd_buf);
 void str_copy_delim(char *src);
 
+/* 使用 json 存储数据 */
+int ParseJsonIndex(const char *buf);
+int ParseJsonFromFile(const char *buf, char *exec_buf, const char *file);
+
 #endif

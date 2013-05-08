@@ -1,0 +1,26 @@
+/* 语音输入   按键 */
+{
+	"index":
+	[
+		{
+			"speech":"新建标签",
+			"cmd":"0xffe1 0xffe3 0x0054"
+		},
+		{
+			"speech":"新建窗口",
+			"cmd":"0xffe1 0xffe3 0x004e"
+		},
+		{
+			"speech":"全屏",
+			"cmd":"0xffc8"
+		},
+		{
+			"speech":"最大化",
+			"cmd":"0xffe9 0xffc2"
+		},
+		{
+			"speech":"关闭",
+			"cmd":"0xffe9 0xffc1"
+		}
+	]
+}

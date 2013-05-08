@@ -2,6 +2,35 @@
 
 extern struct process_info cur_process;
 
+/*
+ * 处理音频文件
+ */
+void parse_record(char *cmd_buf)
+{
+	int ret;
+
+	memset(cmd_buf, 0, BUF_LEN);
+
+	fprintf(stderr, "开始语音识别...\n");
+	ret = SpeechRecog(INPUT_FILE, OUTPUT_FILE);
+	if ( ret == -1 ) {
+		printf("语音识别失败...\n");
+		exit(-1);
+	}
+	fprintf(stderr, "语音识别结束， 成功！...\n");
+
+	get_cmd_buf(cmd_buf);
+	if ( cmd_buf[0] == '\0' ) {
+		return;
+	}
+	sys_err("parse record : %s\n", cmd_buf);
+	
+	return;
+}
+
+/*
+ * 获取语音输入的命令
+ */
 void get_cmd_buf(char *buf)
 {
 	FILE *fp = NULL;
@@ -27,6 +56,9 @@ void get_cmd_buf(char *buf)
 	fprintf(stderr, "cmd_buf : %s\n", buf);
 }
 
+/*
+ * 去掉多余的符号
+ */
 void clear_punctuation(char *punc)
 {
 	if ( strncmp(punc, "。", 3) == 0 ) {
@@ -38,6 +70,9 @@ void clear_punctuation(char *punc)
 	}
 }
 
+/*
+ * 搜索指定的文件，取得对应的命令
+ */
 void search_str(char *cmd_buf, char *exec_buf, char *conf_file)
 {
 	FILE *fp;
@@ -85,6 +120,10 @@ void search_str(char *cmd_buf, char *exec_buf, char *conf_file)
 	}
 }
 
+/*
+ * 搜索 index.conf 文件，
+ * 设置进程名，标题，配置文件，命令类型
+ */
 void search_index(char *cmd_buf)
 {
 	FILE *fp;
@@ -134,6 +173,10 @@ void search_index(char *cmd_buf)
 	}
 }
 
+/*
+ * 以指定的字符串分割给出的字符串
+ * 得到对应的结果
+ */
 void str_copy_delim(char *src)
 {
 	char *p = NULL;
@@ -165,27 +208,4 @@ void str_copy_delim(char *src)
 	if ( cur_process.type[len -1] == '\n' ) {
 		cur_process.type[len -1] = '\0';
 	}
-}
-
-void parse_record(char *cmd_buf)
-{
-	int ret;
-
-	memset(cmd_buf, 0, BUF_LEN);
-
-	fprintf(stderr, "开始语音识别...\n");
-	ret = SpeechRecog(INPUT_FILE, OUTPUT_FILE);
-	if ( ret == -1 ) {
-		printf("语音识别失败...\n");
-		exit(-1);
-	}
-	fprintf(stderr, "语音识别结束， 成功！...\n");
-
-	get_cmd_buf(cmd_buf);
-	if ( cmd_buf[0] == '\0' ) {
-		return;
-	}
-	sys_err("parse record : %s\n", cmd_buf);
-	
-	return;
 }

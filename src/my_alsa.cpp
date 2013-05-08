@@ -59,6 +59,9 @@ void MySndEnd(snd_pcm_t *pcm)
 	}
 }
 
+/*
+ * 录音
+ */
 int MySndRecord(int timenum, const char *output_file)
 {
 	long loops;	//录音的秒数

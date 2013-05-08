@@ -10,10 +10,15 @@
 #define INPUT_FILE	"/tmp/tmpin.wav"
 #define OUTPUT_FILE	"/tmp/output"
 #define ROWS_FILE	"/tmp/rows"
+#define READ_WAV	"/tmp/read_wav.wav"
 
 #define INDEX_FILE	"conf/index.conf"
 #define OPEN_FILE	"conf/open.conf"
 #define CMD_FILE	"conf/command.conf"
+
+#define INDEX_JSON	"conf/index.json"
+#define OPEN_JSON	"conf/open.json"
+#define CMD_JSON	"conf/command.json"
 
 #define sys_err(args ...) {fprintf(stderr, args);}
 #define sys_says(args ...) {fprintf(stdout, args);}

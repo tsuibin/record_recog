@@ -17,7 +17,7 @@ void send_key_press( Display *disp, Window win, int keycode );
 void send_key_release( Display *disp, Window win, int keycode );
 
 /* 激活窗口 */
-void set_focus();
+int set_focus();
 
 void get_wid(char *name);
 int index_str(char *name, char *src);

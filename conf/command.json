@@ -1,0 +1,10 @@
+/* 语音输入	命令 */
+{
+	"index":
+	[
+		{
+			"speech":"百度"
+			"cmd":"firefox -new-tab www.baidu.com > /dev/null &"
+		}
+	]
+}

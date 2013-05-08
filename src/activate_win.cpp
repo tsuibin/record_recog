@@ -3,7 +3,10 @@
 extern Window match_wid;
 extern struct process_info cur_process;
 
-void set_focus()
+/*
+ * 激活窗口
+ */
+int set_focus()
 {
 	Display *disp = NULL;
 
@@ -11,7 +14,7 @@ void set_focus()
 
 	if ( !(disp = XOpenDisplay(NULL)) ) {
 		sys_err("Cannot open display...\n");
-		return ;
+		return -2;
 	}
 	sys_err("create display ok!\n");
 	
@@ -20,7 +23,7 @@ void set_focus()
 	if ( match_wid == (Window)0 ) {
 		sys_err("match wid failed...\n");
 		XCloseDisplay(disp);
-		return;
+		return -1;
 	}
 	sys_err("match_wid : %lu\n", match_wid);
 
@@ -31,11 +34,16 @@ void set_focus()
 	
 	XCloseDisplay(disp);
 	match_wid = (Window)0;
+	
+	return 0;
 }
 
+/*
+ * 获取窗口 ID
+ */
 void get_wid(char *name)
 {
-	int flag = 0;
+	//int flag = 0;
 	FILE *fwm = NULL;
 	unsigned long int wm = 0;
 	char wm_buf[READ_LINE];
@@ -69,6 +77,9 @@ void get_wid(char *name)
 	fclose(fwm);
 }
 
+/*
+ * 生成窗口 ID 列表
+ */
 void sys_wm_wid()
 {
 	char buf[] = "wmctrl -lx | sed  \'1,3d\' | awk \'{print $1, $3}\' > \
@@ -77,6 +88,9 @@ void sys_wm_wid()
 	system(buf);
 }
 
+/*
+ * 匹配程序名
+ */
 int index_str(char *name, char *src)
 {
 	int i = 0;

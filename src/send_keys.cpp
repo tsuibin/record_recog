@@ -10,6 +10,9 @@ extern struct process_info cur_process;
 //static int exist_flag = 0;
 Window match_wid = (Window)0;
 
+/*
+ * 执行快捷键指令
+ */
 void exec_command(int *keys)
 {
 	int *tmp_key = keys;
@@ -53,6 +56,9 @@ void exec_command(int *keys)
 	match_wid = (Window)0;
 }
 
+/*
+ * 设置按键为 Pressed 状态
+ */
 void send_key_press( Display *disp, Window win, int keycode )
 {
 	XEvent event;
@@ -81,6 +87,9 @@ void send_key_press( Display *disp, Window win, int keycode )
 	XFlush(disp);
 }
 
+/*
+ * 设置按键为 Released 状态
+ */
 void send_key_release( Display *disp, Window win, int keycode )
 {
 	XEvent event;
@@ -109,6 +118,10 @@ void send_key_release( Display *disp, Window win, int keycode )
 	XFlush(disp);
 }
 
+/*
+ * 分割按键字符串
+ * 得到按键的整型值
+ */
 void strtok_num(char *exec_buf, int *nums)
 {
 	char *p = NULL;

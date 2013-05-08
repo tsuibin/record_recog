@@ -1,0 +1,22 @@
+/* 程序名	命令 */
+{
+	"index":
+	[
+		{
+			"speech":"firefox"
+			"cmd":"firefox > /dev/null &"
+		},
+		{
+			"speech":"gnome-terminal"
+			"cmd":"gnome-terminal"
+		},
+		{
+			"speech":"deepin-music-player"
+			"cmd":"deepin-music-player > /dev/null  &"
+		},
+		{
+			"speech":"nautilus"
+			"cmd":"nautilus"
+		}
+	]
+}
