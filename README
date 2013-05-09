@@ -14,6 +14,7 @@ MSCLIBS_PATH : 为科大讯飞库的位置。
 
 依赖依赖(64位)：
 gksu
+xsel
 wmctrl
 ia32-libs
 gcc-multilib
