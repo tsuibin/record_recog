@@ -3,7 +3,7 @@
 	"index":
 	[
 		{
-			"speech":"百度"
+			"speech":"百度",
 			"cmd":"firefox -new-tab www.baidu.com > /dev/null &"
 		}
 	]

@@ -5,18 +5,18 @@ int synth_first = 1;
 /*
  * 朗读文件中的文本
  */
-void read_wav(char *text)
+void read_wav_from_file(char *text)
 {
 	FILE *fp = NULL;
 	char buf[READ_LINE];
 	char read_tmp[READ_LINE];
 	if ( text == NULL ) {
-		sys_says("read_wav arguments error...\n");
+		sys_says("read_wav_from_file arguments error...\n");
 		return ;
 	}
 
 	if ( (fp = fopen(text, "r")) == NULL ) {
-		sys_says("read_wav open file failed...\n");
+		sys_says("read_wav_from_file open file failed...\n");
 		return;
 	}
 
@@ -28,7 +28,7 @@ void read_wav(char *text)
 		}
 
 		if ( buf[strlen(buf) - 1] == '\n' ) {
-			buf[strlen(buf) - 1] == '\0';
+			buf[strlen(buf) - 1] = '\0';
 		}
 
 		if ( strlen(buf) < 1 ) {
@@ -47,6 +47,13 @@ void read_wav(char *text)
 	sprintf( read_tmp, "aplay -f S16_LE -c 1 -r 16000 %s", READ_WAV );
 	system(read_tmp);
 }
+
+void read_xsel()
+{
+	system("xsel > /tmp/sel_out");
+	read_wav_from_file("/tmp/sel_out");
+}
+
 /*
 int main( int argc, char **argv )
 {

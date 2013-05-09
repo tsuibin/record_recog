@@ -3,23 +3,23 @@
 	"index":
 	[
 		{
-			"speech":"firefox"
+			"speech":"firefox",
 			"cmd":"firefox > /dev/null &"
 		},
 		{
-			"speech":"gnome-terminal"
+			"speech":"gnome-terminal",
 			"cmd":"gnome-terminal"
 		},
 		{
-			"speech":"deepin-music-player"
+			"speech":"deepin-music-player",
 			"cmd":"deepin-music-player > /dev/null  &"
 		},
 		{
-			"speech":"nautilus"
+			"speech":"nautilus",
 			"cmd":"nautilus"
 		},
 		{
-			"speech":"deepin-screenshot"
+			"speech":"deepin-screenshot",
 			"cmd":"deepin-screenshot > /dev/null &"
 		}
 	]

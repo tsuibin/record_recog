@@ -1,14 +1,9 @@
 #include "my_alsa.h"
+#include "my_init.h"
+#include "my_qtts.h"
 #include "exec_cmd.h"
-#include <fcntl.h>
-#include <pthread.h>
-#include <sys/ioctl.h>
-#include <linux/input.h>
 
-#define NAME_LEN 80
-//#define sys_says(arg ...)	{ fprintf(stderr, arg); }
-
-void get_dev_id(char *id_name);
+/* 录音线程 */
 void *record_start(void *arg);
 
 struct process_info cur_process;
@@ -16,40 +11,36 @@ struct process_info cur_process;
 int first_record;
 int record_abort = 0;
 
-#include <signal.h>
-#include <sys/stat.h>
-//#include <sys/param.h>
-
-/* 守护进程 */
-void init_deamon();
-
 int main()
 {
 	int fd;
 	int flag;
-	char name[NAME_LEN];
-	char kbd_path[NAME_LEN];
-	struct input_event myinput;
-	
 	int keys[KEY_LEN];
+	char tmp[NAME_LEN];
+	char kbd_path[NAME_LEN];
 	char cmd_buf[BUF_LEN];
 	char exec_buf[READ_LINE];
 	
-	init_deamon();
+	double rtt;
+	struct timeval tvpressed;
+	struct timeval tvreleased;
+	
+	struct input_event myinput;
+	
+	//signal(SIGCHLD, SIG_IGN);
+	//init_deamon();
 	
 	memset(keys, 0, KEY_LEN * sizeof(int));
 	memset(cmd_buf, 0, BUF_LEN);
 	memset(exec_buf, 0, READ_LINE);
 
-	memset(name, 0, NAME_LEN);
-	get_dev_id(name);
-	if ( name[0] == '\0' ) {
-		sys_says("get_dev_id failed...\n");
-		exit(-1);
-	}
-
-	sprintf( kbd_path, "/dev/input/%s", name );
+	get_dev_path(kbd_path);
 	sys_says("kbd_path : %s\n", kbd_path);
+	
+	sprintf(tmp, "gksudo chmod 777 %s", kbd_path);
+	sys_says("gksudo : %s\n", tmp);
+	system(tmp);
+	
 	fd = open(kbd_path, O_RDONLY);
 	if ( fd == -1 ) {
 		sys_says("open keyboard err : %s\n", strerror(errno) );
@@ -70,36 +61,53 @@ int main()
 			}
 
 			if ( (myinput.code == KEY_LEFTCTRL || 
-						myinput.code == KEY_RIGHTCTRL) && 
-					(myinput.value == 1) ) {
-				sys_says("KEY_CTRL Pressed\n");
+						myinput.code == KEY_RIGHTCTRL) ) {
+				if ( myinput.value == 1 ) {	//按下
+					memset(&tvpressed, 0, sizeof(struct timeval));
+					gettimeofday( &tvpressed, NULL );
+					sys_says("KEY_CTRL Pressed\n");
 				
-				first_record = 1;
-				record_abort = 1;
-				/*if ( pthread_create(&recd_start, 0, record_start, 0) != 0 ) {
-					sys_says("create thrd err...\n");
-					return -1;
-				}*/
+					first_record = 1;
+					record_abort = 1;
+					/*if ( pthread_create(&recd_start, 0, 
+										record_start, 0) != 0 ) {
+						sys_says("create thrd err...\n");
+						return -1;
+					}*/
+				} else if ( myinput.value == 0 ) {	//松开
+					memset(&tvreleased, 0, sizeof(struct timeval));
+					gettimeofday( &tvreleased, NULL );
+					sys_says("KEY_CTRL Released\n");
+					record_abort = 0;
+				
+					//pthread_join(recd_start, NULL);
+					
+					tv_sub(&tvpressed, &tvreleased);
+					rtt = tvreleased.tv_sec * 1000 + tvreleased.tv_usec / 1000;
+					sys_says("rtt : %0.1f\n\n", rtt);
+					if ( (((int)rtt) / 1000) < 2 ) {
+						//按下时间小于2s，不是录音操作，放弃
+						continue;
+					}
+					parse_record(cmd_buf);
+					if ( cmd_buf[0] == '\0' ) {
+						continue;
+					}
+				
+					if ( !is_config_set() ) {
+						fprintf(stderr, "!is_config_set\n");
+						no_set_config(cmd_buf, exec_buf);
+					} else {
+						fprintf(stderr, "is_config_set\n");
+						has_set_config(cmd_buf, exec_buf, keys);
+					}
+				}
 			}
 			
-			if ( (myinput.code == KEY_LEFTCTRL || 
-						myinput.code == KEY_RIGHTCTRL) && 
-					(myinput.value == 0) ) {
-				sys_says("KEY_CTRL Released\n");
-				record_abort = 0;
-				
-				//pthread_join(recd_start, NULL);
-				parse_record(cmd_buf);
-				if ( cmd_buf[0] == '\0' ) {
-					continue;
-				}
-				
-				if ( !is_config_set() ) {
-					fprintf(stderr, "!is_config_set\n");
-					no_set_config(cmd_buf, exec_buf);
-				} else {
-					fprintf(stderr, "is_config_set\n");
-					has_set_config(cmd_buf, exec_buf, keys);
+			if ( (myinput.code == KEY_LEFTALT) || 
+					(myinput.code == KEY_RIGHTALT) ) {
+				if ( myinput.value == 1 ) {	//按下
+					read_xsel();
 				}
 			}
 		}
@@ -125,67 +133,4 @@ void *record_start(void *arg)
 		}
 	//}
 	pthread_exit(NULL);
-}
-
-/*
- * 获取键盘设备名
- */
-void get_dev_id(char *id_name)
-{
-	FILE *fp = NULL;
-	char buf[] = "ls -l /dev/input/by-path/ | awk \'{print $9, $NF}\' | \
-			  grep 0-event-kbd | awk \'{print $NF}\' | cut -c4- > /tmp/keys";
-
-	system(buf);
-	if ( (fp = fopen("/tmp/keys", "r")) == NULL ) {
-		sys_says("fopen err : %s\n", strerror(errno));
-		exit(-1);
-	}
-
-	fscanf(fp, "%s", id_name);
-	fclose(fp);
-
-	sys_says("id_name : %s\n", id_name);
-}
-
-/*
- * 初始化守护进程
- */
-void init_deamon()
-{
-	//int i;
-	pid_t pid;
-
-	pid = fork();
-	if ( pid == -1 ) {
-		sys_says("fork failed : %s\n", strerror(errno));
-		exit(-1);
-	} else if ( pid > 0 ) {
-		exit(0);	//结束父进程
-	}
-
-	// 第一子进程，后台继续执行
-	setsid();	//第一子进程成为新的会话组长和进程组长
-
-	// 禁止进程重新打开控制终端
-	/*pid = fork();
-	if ( pid == -1 ) {
-		sys_says("child fork failed : %s\n", strerror(errno));
-		exit(-1);
-	} else if ( pid > 0 ) {
-		exit(0);	//结束第一子进程
-	}*/
-
-	//第二子进程不再是会话组长
-	//关闭已打开的文件描述符
-	/*for ( i = 0; i < NOFILE; i++ ) {
-		close(i);
-	}*/
-
-	chdir("/home/iwen/Yunio/Deepin/record_speech");	//改变工作目录到 /tmp
-	umask(0);	//重设文件创建掩码
-
-	signal(SIGCHLD, SIG_IGN);
-
-	return ;
 }

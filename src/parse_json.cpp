@@ -19,10 +19,13 @@ int ParseJsonFromFile(const char *buf, char *exec_buf, const char *file)
 	int arraylen;
 	char tmp[BUF_LEN];
 
+	sys_says("ParseJsonFromFile : open %s\n", file);
 	std::ifstream is;
 	is.open(file, std::ios::binary);
 
+	sys_says("ParseJsonFromFile : open successful\n");
 	if ( reader.parse(is, index) ) {
+		sys_says("ParseJsonFromFile : parse start...\n");
 		arraylen = index["index"].size();
 		std::cout<<"arraylen : "<<arraylen<<endl;
 

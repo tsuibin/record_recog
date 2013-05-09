@@ -21,7 +21,7 @@ vpath %.cpp ${SRCPATH}
 
 #OBJS := my_qtts.o read_wav.o
 #OBJS := my_qisr.o my_alsa.o main_test.o parse_command.o send_keys.o
-OBJS := my_qisr.o my_alsa.o parse_speech.o activate_win.o send_keys.o music_func.o exec_cmd.o parse_json.o main.o
+OBJS := my_qisr.o my_alsa.o my_qtts.o parse_speech.o activate_win.o send_keys.o music_func.o exec_cmd.o parse_json.o read_wav.o my_init.o main.o
 
 all : ${PROG_NAME}
 

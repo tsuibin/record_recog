@@ -13,6 +13,7 @@ MSCLIBS_PATH : 为科大讯飞库的位置。
 其中 Makefile 是在 64 下写的，如果是 32 位机器，请将 -m32 去掉。
 
 依赖依赖(64位)：
+gksu
 wmctrl
 ia32-libs
 gcc-multilib

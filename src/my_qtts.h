@@ -20,10 +20,13 @@ inline void MyEndSynth(const char *sessionId, char *reason)
 	}
 }
 
-void MyInit(const char *configs);
+void MyInitTTS(const char *configs);
 
 void MyTextPut(const char *sessionId, const char *synthText, 
 	unsigned int textLen, const char *params);
 
 int SpeechSynth(const char *text, const char *outFile);	
+
+void read_wav_from_file(char *text);
+void read_xsel();
 #endif

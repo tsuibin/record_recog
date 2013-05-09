@@ -67,7 +67,7 @@ void has_set_config(char *cmd_buf, char *exec_buf, int *keys)
 			// 多样的命令类型
 			memset(exec_buf, 0, READ_LINE);
 			//search_str(cmd_buf, exec_buf, CMD_FILE);
-			ParseJsonFromFile(cmd_buf, exec_buf, CMD_FILE);
+			ParseJsonFromFile(cmd_buf, exec_buf, CMD_JSON);
 			// 执行其他的命令
 			if (exec_buf[0] != '\0' ) {
 				system(exec_buf);
@@ -107,6 +107,7 @@ int is_process_open(char *buf)
 		return 1;
 	}
 	
+	sys_says("proceess not exist...\n");
 	return 0;
 }
 
@@ -116,9 +117,12 @@ int is_process_open(char *buf)
 void open_process(char *cmd_buf, char *exec_buf, char *process_name)
 {
 	if ( is_process_open(process_name) == 0 ) {
-		// 进程存在
+		// 进程不存在
 		//search_str(process_name, exec_buf, OPEN_FILE);
-		ParseJsonFromFile(process_name, exec_buf, OPEN_FILE);
+		sys_says("process_name : %s\n", process_name);
+		sys_says("OPEN_JSON : %s\n", OPEN_JSON);
+		ParseJsonFromFile(process_name, exec_buf, OPEN_JSON);
+		sys_says("exec_buf : %s\n", exec_buf);
 		if ( exec_buf != NULL ) {
 			system(exec_buf);
 		}
@@ -127,7 +131,7 @@ void open_process(char *cmd_buf, char *exec_buf, char *process_name)
 		if ( set_focus() == -1 ) {
 			// 进程存在，但为打开窗口
 			//search_str(process_name, exec_buf, OPEN_FILE);
-			ParseJsonFromFile(process_name, exec_buf, OPEN_FILE);
+			ParseJsonFromFile(process_name, exec_buf, OPEN_JSON);
 			if ( exec_buf != NULL ) {
 				system(exec_buf);
 			}

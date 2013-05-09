@@ -16,6 +16,7 @@ int main()
 {
 	int fd;
 	int flag;
+	char tmp[READ_LINE];
 	char name[READ_LINE];
 	char kbd_path[READ_LINE];
 	struct input_event myinput;
@@ -29,6 +30,10 @@ int main()
 
 	sprintf( kbd_path, "/dev/input/%s", name );
 	sys_says("kbd_path : %s\n", kbd_path);
+	memset(tmp, 0, READ_LINE);
+	sprintf(tmp, "gksudo chmod 777 %s", kbd_path);
+	sys_says("gksudo : %s\n", tmp);
+	system(tmp);
 	fd = open(kbd_path, O_RDONLY);
 	if ( fd == -1 ) {
 		sys_says("open keyboard err : %s\n", strerror(errno) );
@@ -45,8 +50,8 @@ int main()
 			//sys_says("type:%d\n", myinput.type);
 			//sys_says("code:%d\n", myinput.code);
 			//sys_says("value:%d\n", myinput.value);
-			//sys_says("key %d %s\n", myinput.code, 
-			//		(myinput.value) ? "Pressed" : "Released" );
+			sys_says("key %d %s\n", myinput.code, 
+					(myinput.value) ? "Pressed" : "Released" );
 			//sys_says("=========================================\n");
 			if (myinput.code == KEY_ESC) {
 				break;

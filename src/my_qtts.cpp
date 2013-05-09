@@ -2,7 +2,7 @@
 
 extern int synth_first;
 
-void MyInit(const char *configs)
+void MyInitTTS(const char *configs)
 {
 	int ret;
 	
@@ -54,8 +54,8 @@ int SpeechSynth(const char *text, const char *outFile)
 	 */
 	configs = "server_url=http://dev.voicecloud.cn:80/index.htm, \
 		appid=51777175,timeout=10000, coding_libs=libspeex.so";
-	MyInit(configs);
-	//MyInit("appid=51777175");
+	MyInitTTS(configs);
+	//MyInitTTS("appid=51777175");
 
 	/*
 	 * 开始会话，使用会话模式
