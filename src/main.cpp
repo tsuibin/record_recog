@@ -18,7 +18,7 @@ int record_abort = 0;
 
 #include <signal.h>
 #include <sys/stat.h>
-#include <sys/param.h>
+//#include <sys/param.h>
 
 /* 守护进程 */
 void init_deamon();
@@ -34,6 +34,8 @@ int main()
 	int keys[KEY_LEN];
 	char cmd_buf[BUF_LEN];
 	char exec_buf[READ_LINE];
+	
+	init_deamon();
 	
 	memset(keys, 0, KEY_LEN * sizeof(int));
 	memset(cmd_buf, 0, BUF_LEN);
@@ -151,7 +153,7 @@ void get_dev_id(char *id_name)
  */
 void init_deamon()
 {
-	int i;
+	//int i;
 	pid_t pid;
 
 	pid = fork();
@@ -165,20 +167,20 @@ void init_deamon()
 	// 第一子进程，后台继续执行
 	setsid();	//第一子进程成为新的会话组长和进程组长
 
-	//与控制终端脱离
-	pid = fork();
+	// 禁止进程重新打开控制终端
+	/*pid = fork();
 	if ( pid == -1 ) {
 		sys_says("child fork failed : %s\n", strerror(errno));
 		exit(-1);
 	} else if ( pid > 0 ) {
 		exit(0);	//结束第一子进程
-	}
+	}*/
 
 	//第二子进程不再是会话组长
 	//关闭已打开的文件描述符
-	for ( i = 0; i < NOFILE; i++ ) {
+	/*for ( i = 0; i < NOFILE; i++ ) {
 		close(i);
-	}
+	}*/
 
 	chdir("/home/iwen/Yunio/Deepin/record_speech");	//改变工作目录到 /tmp
 	umask(0);	//重设文件创建掩码

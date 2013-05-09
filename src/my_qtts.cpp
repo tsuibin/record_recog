@@ -9,7 +9,8 @@ void MyInit(const char *configs)
 	ret = QTTSInit(configs);
 	if ( ret != 0 ) {
 		printf( "QTTSInit failed, error code %d\n", ret );
-		exit(-1);
+		//exit(-1);
+		return;
 	}
 }
 
@@ -23,7 +24,8 @@ void MyTextPut(const char *sessionId, const char *synthText,
 		printf( "QTTSTextPut failed, error code %d\n", ret );
 		char tmp[] = "QTTSTextPut failed!\n"; 
 		MyEndSynth(sessionId, tmp);
-		exit(-1);
+		//exit(-1);
+		return;
 	}
 }
 

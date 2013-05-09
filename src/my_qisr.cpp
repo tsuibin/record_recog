@@ -7,7 +7,8 @@ void MyInit(const char *configs)
 	ret = QISRInit(configs);
 	if ( ret != 0 ) {
 		printf( "QISRInit failed, error code %d\n", ret );
-		exit(-1);
+		//exit(-1);
+		return;
 	}
 }
 

@@ -11,7 +11,8 @@ void MySndOpen (snd_pcm_t **pcm, const char *name,
 	ret = snd_pcm_open(pcm, name, stream, mode);
 	if (ret < 0) {
 		fprintf(stderr, "unable to open pcm device: %s\n", snd_strerror(ret));
-		exit(1);
+		//exit(1);
+		return;
 	}
 }
 
@@ -22,7 +23,8 @@ void MySndParams(snd_pcm_t *pcm, snd_pcm_hw_params_t *params)
 	ret = snd_pcm_hw_params(pcm, params);
 	if (ret != 0) {
 		fprintf(stderr, "unable to set hw parameters: %s\n", snd_strerror(ret));
-		exit(1);
+		//exit(1);
+		return;
 	}
 }
 
@@ -49,13 +51,15 @@ void MySndEnd(snd_pcm_t *pcm)
 	ret = snd_pcm_drain(pcm);
 	if (ret != 0) {
 		fprintf(stderr, "unable to set hw parameters: %s\n", snd_strerror(ret));
-		exit(1);
+		//exit(1);
+		return;
 	}
 	
 	ret = snd_pcm_close(pcm);
 	if (ret != 0) {
 		fprintf(stderr, "unable to set hw parameters: %s\n", snd_strerror(ret));
-		exit(1);
+		//exit(1);
+		return;
 	}
 }
 

@@ -12,10 +12,13 @@ void parse_record(char *cmd_buf)
 	memset(cmd_buf, 0, BUF_LEN);
 
 	fprintf(stderr, "开始语音识别...\n");
+	sys_err("input : %s\n", INPUT_FILE);
+	sys_err("ouput : %s\n", OUTPUT_FILE);
 	ret = SpeechRecog(INPUT_FILE, OUTPUT_FILE);
 	if ( ret == -1 ) {
 		printf("语音识别失败...\n");
-		exit(-1);
+		//exit(-1);
+		return;
 	}
 	fprintf(stderr, "语音识别结束， 成功！...\n");
 
