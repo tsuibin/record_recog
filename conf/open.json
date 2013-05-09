@@ -17,6 +17,10 @@
 		{
 			"speech":"nautilus"
 			"cmd":"nautilus"
+		},
+		{
+			"speech":"deepin-screenshot"
+			"cmd":"deepin-screenshot > /dev/null &"
 		}
 	]
 }

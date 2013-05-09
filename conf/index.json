@@ -29,6 +29,13 @@
 			"title":"Deepin-music-player",
 			"config":"./conf/deepin-music-player.json",
 			"type":"func"
+		},
+		{
+			"speech":"深度截图",
+			"name":"deepin-screenshot",
+			"title":"",
+			"config":"",
+			"type":""
 		}
 	]
 }
