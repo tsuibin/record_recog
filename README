@@ -2,29 +2,25 @@
 录音并识别。
 录音使用 alsa 库，语音识别使用科大讯飞提供的接口。
 
-由于科大讯飞只提供了 32 位的库，所以 64 位请安装 32 位依赖库。
 运行时请设置：LD_LIBRARY_PATH
 如：
-	MSCLIBS_PATH=./bin
+	ARCH=`arch`
+	MSCLIBS_PATH=./bin/$ARCH
 	export LD_LIBRARY_PATH=${MSCLIBS_PATH} ：${LD_LIBRARY_PATH}
 
-MSCLIBS_PATH : 为科大讯飞库的位置。
+MSCLIBS_PATH : 为科大讯飞库的位置，请根据系统架构具体选择。
 
-其中 Makefile 是在 64 下写的，如果是 32 位机器，请将 -m32 去掉。
-
-依赖依赖(64位)：
+依赖：
 gksu
 xsel
 wmctrl
-ia32-libs
-gcc-multilib
-lib32asound2-dev
-libx11-data:i386
-libx11-dev:i386
-libxtst-dev:i386
-libxmu-dev:i386
-libdbus-1-dev:i386
-libjsoncpp-dev:i386
-libdbus-glib-1-dev:i386
+libasound2-dev
+libx11-data
+libx11-dev
+libxtst-dev
+libxmu-dev
+libdbus-1-dev
+libjsoncpp-dev
+libdbus-glib-1-dev
 
 程序设计思想请见：speech_struct.pdf
