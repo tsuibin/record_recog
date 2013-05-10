@@ -36,7 +36,7 @@ void read_wav_from_file(const char *text)
 		if ( strlen(buf) < 1 ) {
 			continue;
 		}
-		sys_says("buf : %s\nlen : %d\n", buf, strlen(buf));
+		sys_says("buf : %s\nlen : %lu\n", buf, strlen(buf));
 		if ( SpeechSynth(buf, READ_WAV) == -1 ) {
 			sys_says("SpeechSynth failed...\n");
 			continue;

@@ -20,7 +20,7 @@ inline void MyEndSynth(const char *sessionId, char *reason)
 	}
 }
 
-void MyInitTTS(const char *configs);
+int MyInitTTS(const char *configs);
 
 void MyTextPut(const char *sessionId, const char *synthText, 
 	unsigned int textLen, const char *params);

@@ -1,12 +1,23 @@
 #common makefile header
 
-CC=gcc
-CCX=g++
+CC = gcc
+CXX = g++
+
+ARCH = $(shell arch)
+#BIT32:=i686
+BIT64:=x86_64 
+
+ifeq ($(ARCH),$(BIT64)) 
+@echo "!=" 
+LIBSPATH=bin/i386
+else 
+@echo "=="
+LIBSPATH=bin/x86_64
+endif
 
 PROG_NAME	= msc_test
 SRCPATH=src
 INCSPATH=include
-LIBSPATH=bin
 
 XCFLAGS  := `pkg-config --cflags x11`
 XLIBS	:= `pkg-config --libs x11`
@@ -26,13 +37,13 @@ OBJS := my_qisr.o my_alsa.o my_qtts.o parse_speech.o activate_win.o send_keys.o 
 all : ${PROG_NAME}
 
 ${PROG_NAME} : ${OBJS}
-	${CCX} -m32 -o $@ $^ ${LIBS}
+	${CXX} -o $@ $^ ${LIBS}
 
 %.o : %.cpp
-	${CCX} -m32 ${CFLAGS} -c $<
+	${CXX} ${CFLAGS} -c $<
 	
 %.o : %.c
-	${CC} -m32 ${CFLAGS} -c $<
+	${CC} ${CFLAGS} -c $<
 
 clean :
 	rm -rf ${PROG_NAME} *.o

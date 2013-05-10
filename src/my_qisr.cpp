@@ -61,8 +61,8 @@ int SpeechRecog(const char *inFile, const char *outFile)
 	recogParams = "ssm=1,sub=iat,auf=audio/L16;rate=16000,aue=raw,ent=sms16k,\
 		rst=plain,rse=utf8";
 	//8k
-	//recogParams = "ssm=1,sub=iat,auf=audio/L16;rate=8000,aue=speex,ent=sms8k,\
-		rst=plain,rse=utf8";
+	/*recogParams = "ssm=1,sub=iat,auf=audio/L16;rate=8000,aue=speex,ent=sms8k,\
+		rst=plain,rse=utf8";*/
 	sessionId = QISRSessionBegin("", recogParams, &ret);
 	if ( ret != 0 ) {
 		printf("QISRSessionBegin failed, error code is %d\n", ret);

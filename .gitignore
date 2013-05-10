@@ -32,3 +32,5 @@ output
 tmp
 rows
 wm_wid
+msc
+*.log

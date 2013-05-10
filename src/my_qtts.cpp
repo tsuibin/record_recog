@@ -2,7 +2,7 @@
 
 extern int synth_first;
 
-void MyInitTTS(const char *configs)
+int MyInitTTS(const char *configs)
 {
 	int ret;
 	
@@ -10,8 +10,10 @@ void MyInitTTS(const char *configs)
 	if ( ret != 0 ) {
 		printf( "QTTSInit failed, error code %d\n", ret );
 		//exit(-1);
-		return;
+		return -1;
 	}
+	
+	return 0;
 }
 
 void MyTextPut(const char *sessionId, const char *synthText, 
@@ -54,8 +56,11 @@ int SpeechSynth(const char *text, const char *outFile)
 	 */
 	configs = "server_url=http://dev.voicecloud.cn:80/index.htm, \
 		appid=51777175,timeout=10000, coding_libs=libspeex.so";
-	MyInitTTS(configs);
+	ret = MyInitTTS(configs);
 	//MyInitTTS("appid=51777175");
+	if ( ret == -1 ) {
+		return -1;
+	}
 
 	/*
 	 * 开始会话，使用会话模式
