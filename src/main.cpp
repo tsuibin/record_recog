@@ -27,8 +27,8 @@ int main()
 	
 	struct input_event myinput;
 	
-	signal(SIGCHLD, SIG_IGN);
-	init_deamon();
+	//signal(SIGCHLD, SIG_IGN);
+	//init_deamon();
 	
 	memset(keys, 0, KEY_LEN * sizeof(int));
 	memset(cmd_buf, 0, BUF_LEN);
