@@ -10,7 +10,7 @@
 #include <X11/extensions/XTest.h>
 
 /* 执行指令 */
-void exec_command(int *keys);
+void exec_cmd_via_keys(int *keys);
 void strtok_num(char *exec_buf, int *nums);
 
 void send_key_press( Display *disp, Window win, int keycode );

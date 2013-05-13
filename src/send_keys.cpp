@@ -13,7 +13,7 @@ Window match_wid = (Window)0;
 /*
  * 执行快捷键指令
  */
-void exec_command(int *keys)
+void exec_cmd_via_keys(int *keys)
 {
 	int *tmp_key = keys;
 	Display *disp = NULL;

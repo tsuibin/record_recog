@@ -33,7 +33,6 @@ struct process_info {
 	char name[BUF_LEN];
 	char item[BUF_LEN];
 	char config[BUF_LEN];
-	char type[BUF_LEN];
 };
 
 #endif

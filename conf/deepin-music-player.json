@@ -4,36 +4,44 @@
 	[
 		{
 			"speech":"播放",
-			"cmd":"PlayPause"
+			"cmd":"PlayPause",
+			"type":"func"
 		},
 		{
 			"speech":"暂停",
-			"cmd":"PlayPause"
+			"cmd":"PlayPause",
+			"type":"func"
 		},
 		{
 			"speech":"上一首",
-			"cmd":"Prev"
+			"cmd":"Prev",
+			"type":"func"
 		},
 		{
 			"speech":"下一首",
-			"cmd":"Next"
+			"cmd":"Next",
+			"type":"func"
 		},
 		{
 			"speech":"快进",
-			"cmd":"Forward"
+			"cmd":"Forward",
+			"type":"func"
 		},
 		{
 			"speech":"重放",
-			"cmd":"Rewind"
+			"cmd":"Rewind",
+			"type":"func"
 		},
 		{
 			"speech":"停止",
-			"cmd":"Stop"
+			"cmd":"Stop",
+			"type":"func"
 		},
 		
 		{
 			"speech":"退出",
-			"cmd":"Quit"
+			"cmd":"Quit",
+			"type":"func"
 		}
 	]
 }

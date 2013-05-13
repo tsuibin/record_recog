@@ -1,6 +1,25 @@
 #include "exec_cmd.h"
 
+extern int keys[KEY_LEN];
 extern struct process_info cur_process;
+
+void exec_cmd_via_type(char *exec_buf, char *type_buf)
+{
+	if ( exec_buf == NULL || type_buf == NULL ) {
+		return ;
+	}
+	
+	if ( strncmp(type_buf, "cmd", 3 ) == 0 ) {
+		system(exec_buf);
+	} else if ( strncmp(type_buf, "keys", 4 ) == 0 ) {
+		strtok_num(exec_buf, keys);
+		exec_cmd_via_keys(keys);
+	} else if ( strncmp(type_buf, "func", 4 ) == 0 ) {
+		if ( strncmp(cur_process.name, "deepin-music-player", 19 ) == 0 ) {
+			music_type_func(exec_buf);
+		}
+	}
+}
 
 /*
  * 判断程序配置文件是否设置
@@ -17,7 +36,7 @@ int is_config_set()
 /*
  * 程序配置文件未设置的情况
  */
-void no_set_config(char *cmd_buf, char *exec_buf)
+void no_set_config(char *cmd_buf, char *exec_buf, char *type_buf)
 {
 	//search_index(cmd_buf);
 	ParseJsonIndex(cmd_buf);
@@ -26,57 +45,25 @@ void no_set_config(char *cmd_buf, char *exec_buf)
 		return;
 	}
 				
-	open_process(cmd_buf, exec_buf, cur_process.name);
+	open_process(exec_buf, type_buf, cur_process.name);
 }
 
 /*
  * 程序配置文件设置的情况
  */
-void has_set_config(char *cmd_buf, char *exec_buf, int *keys)
+void has_set_config(char *cmd_buf, char *exec_buf, char *type_buf)
 {
 	sys_err("enter has_set_config...\n");
+	sys_says("cmd : %s\n", cmd_buf);
 	//search_str(cmd_buf, exec_buf, cur_process.config);
-	ParseJsonFromFile(cmd_buf, exec_buf, cur_process.config);
+	memset(exec_buf, 0, READ_LINE);
+	ParseJsonFromFile(cmd_buf, exec_buf, type_buf, cur_process.config);
 	
+	sys_says("exec : %s\n", exec_buf);
 	if ( exec_buf[0] != '\0' ) {
-		//system(exec_buf);
-		// 根据命令类型来执行相关的操作
-		sys_says("-----type : %s\n", cur_process.type);
-		if ( (strncmp(cur_process.type, "keys", 4 ) == 0) ||
-				(strncmp(cur_process.type, "multi", 5 ) == 0) ) {
-			// 执行快捷键
-			fprintf(stderr, "exec_buf != NULL\n");
-			strtok_num(exec_buf, keys);
-			exec_command(keys);
-		} else if ( strncmp(cur_process.type, "func", 4 ) == 0 ) {
-			// 调用函数
-			set_focus();
-			//sys_err("enter music...\n");
-			if ( strncmp(cur_process.name, "deepin-music-player", 19 ) == 0 ) {
-				music_type_func(exec_buf);
-			}
-		} else if ( strncmp(cur_process.type, "cmd", 3 ) == 0 ) {
-			//search_str(cmd_buf, exec_buf, OPEN_FILE);
-			// 执行命令
-			if (exec_buf[0] != '\0' ) {
-				system(exec_buf);
-			}
-		}
+		exec_cmd_via_type(exec_buf, type_buf);
 	} else {
-		if ( strncmp(cur_process.type, "multi", 5 ) == 0 ) {
-			// 多样的命令类型
-			memset(exec_buf, 0, READ_LINE);
-			//search_str(cmd_buf, exec_buf, CMD_FILE);
-			ParseJsonFromFile(cmd_buf, exec_buf, CMD_JSON);
-			// 执行其他的命令
-			if (exec_buf[0] != '\0' ) {
-				system(exec_buf);
-			} else {
-				no_set_config(cmd_buf, exec_buf);
-			}
-		} else {
-			no_set_config(cmd_buf, exec_buf);
-		}
+		no_set_config(cmd_buf, exec_buf, type_buf);
 	}
 }
 
@@ -114,28 +101,24 @@ int is_process_open(char *buf)
 /*
  * 打开进程
  */
-void open_process(char *cmd_buf, char *exec_buf, char *process_name)
+void open_process(char *exec_buf, char *type_buf, char *process_name)
 {
 	if ( is_process_open(process_name) == 0 ) {
 		// 进程不存在
 		//search_str(process_name, exec_buf, OPEN_FILE);
 		sys_says("process_name : %s\n", process_name);
 		sys_says("OPEN_JSON : %s\n", OPEN_JSON);
-		ParseJsonFromFile(process_name, exec_buf, OPEN_JSON);
+		ParseJsonFromFile(process_name, exec_buf, type_buf, OPEN_JSON);
 		sys_says("exec_buf : %s\n", exec_buf);
-		if ( exec_buf != NULL ) {
-			system(exec_buf);
-		}
+		exec_cmd_via_type(exec_buf, type_buf);
 	} else {
 		printf("open process : %s...\n", process_name );
 		//if ( set_focus() == -1 ) {
 		if ( activate_win() == -1 ) {
-			// 进程存在，但为打开窗口
+			// 进程存在，但未打开窗口
 			//search_str(process_name, exec_buf, OPEN_FILE);
-			ParseJsonFromFile(process_name, exec_buf, OPEN_JSON);
-			if ( exec_buf != NULL ) {
-				system(exec_buf);
-			}
+			ParseJsonFromFile(process_name, exec_buf, type_buf, OPEN_JSON);
+			exec_cmd_via_type(exec_buf, type_buf);
 		}
 	}
 }

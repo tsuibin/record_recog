@@ -183,7 +183,7 @@ void search_index(char *cmd_buf)
 void str_copy_delim(char *src)
 {
 	char *p = NULL;
-	int len = 0;
+	//int len = 0;
 	
 	memset(&cur_process, 0, sizeof(cur_process));
 	if (src == NULL) {
@@ -201,7 +201,7 @@ void str_copy_delim(char *src)
 	p = strtok(NULL, ":");
 	memcpy(cur_process.config, p, strlen(p));
 	printf("config: %s\n", cur_process.config);
-	
+	/*
 	p = strtok(NULL, ":");
 	printf("p: %s\n", p);
 	memcpy(cur_process.type, p, strlen(p));
@@ -211,4 +211,5 @@ void str_copy_delim(char *src)
 	if ( cur_process.type[len -1] == '\n' ) {
 		cur_process.type[len -1] = '\0';
 	}
+	*/
 }

@@ -3,16 +3,14 @@
 CC = gcc
 CXX = g++
 
-ARCH = $(shell arch)
+ARCH = $(shell uname -m)
 #BIT32:=i686
-BIT64:=x86_64 
+#BIT64:=x86_64 
 
-ifeq ($(ARCH),$(BIT64)) 
-@echo "!=" 
-LIBSPATH=bin/i386
-else 
-@echo "=="
+ifeq ($(ARCH),x86_64)
 LIBSPATH=bin/x86_64
+else
+LIBSPATH=bin/i386
 endif
 
 PROG_NAME	= msc_test

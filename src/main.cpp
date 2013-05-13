@@ -10,15 +10,16 @@ struct process_info cur_process;
 
 int first_record;
 int record_abort = 0;
+int keys[KEY_LEN];
 
 int main()
 {
 	int fd;
 	int flag;
-	int keys[KEY_LEN];
 	char tmp[NAME_LEN];
 	char kbd_path[NAME_LEN];
 	char cmd_buf[BUF_LEN];
+	char type_buf[BUF_LEN];
 	char exec_buf[READ_LINE];
 	
 	double rtt;
@@ -32,6 +33,7 @@ int main()
 	
 	memset(keys, 0, KEY_LEN * sizeof(int));
 	memset(cmd_buf, 0, BUF_LEN);
+	memset(type_buf, 0, BUF_LEN);
 	memset(exec_buf, 0, READ_LINE);
 
 	get_dev_path(kbd_path);
@@ -96,10 +98,10 @@ int main()
 				
 					if ( !is_config_set() ) {
 						fprintf(stderr, "!is_config_set\n");
-						no_set_config(cmd_buf, exec_buf);
+						no_set_config(cmd_buf, exec_buf, type_buf);
 					} else {
 						fprintf(stderr, "is_config_set\n");
-						has_set_config(cmd_buf, exec_buf, keys);
+						has_set_config(cmd_buf, exec_buf, type_buf);
 					}
 				}
 			}

@@ -1,4 +1,4 @@
-/*语音输入 	程序名	标题   配置文件   命令类型*/
+/*语音输入 	程序名	标题   配置文件*/
 {
 	"index":
 	[
@@ -6,43 +6,37 @@
 			"speech":"终端",
 			"name":"gnome-terminal",
 			"title":"Gnome-terminal",
-			"config":"./conf/terminal.json",
-			"type":"keys"
+			"config":"./conf/terminal.json"
 		},
 		{
 			"speech":"浏览器",
 			"name":"firefox",
 			"title":"Firefox",
-			"config":"./conf/firefox.json",
-			"type":"multi"
+			"config":"./conf/firefox.json"
 		},
 		{
 			"speech":"文件管理器",
 			"name":"nautilus",
 			"title":"Nautilus",
-			"config":"./conf/nautilus.json",
-			"type":"keys"
+			"config":"./conf/nautilus.json"
 		},
 		{
 			"speech":"播放音乐",
 			"name":"deepin-music-player",
 			"title":"Deepin-music-player",
-			"config":"./conf/deepin-music-player.json",
-			"type":"func"
+			"config":"./conf/deepin-music-player.json"
 		},
 		{
 			"speech":"深度截图",
 			"name":"deepin-screenshot",
 			"title":"",
-			"config":"",
-			"type":""
+			"config":""
 		},
 		{
 			"speech":"演示文稿",
 			"name":"wpp",
 			"title":"Wpp",
-			"config":"./conf/wpp.json",
-			"type":"keys"
+			"config":"./conf/wpp.json"
 		}
 	]
 }
