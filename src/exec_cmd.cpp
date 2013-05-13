@@ -61,6 +61,7 @@ void has_set_config(char *cmd_buf, char *exec_buf, char *type_buf)
 	
 	sys_says("exec : %s\n", exec_buf);
 	if ( exec_buf[0] != '\0' ) {
+		activate_win();
 		exec_cmd_via_type(exec_buf, type_buf);
 	} else {
 		no_set_config(cmd_buf, exec_buf, type_buf);
