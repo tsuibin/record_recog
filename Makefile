@@ -25,8 +25,11 @@ XLIBS	:= `pkg-config --libs x11`
 JSONFLAGS = `pkg-config --cflags jsoncpp`
 JSONLIBS  = `pkg-config --libs jsoncpp`
 
-CFLAGS  = -Wall -g -L${LIBSPATH} -I${INCSPATH} ${JSONFLAGS} ${XCFLAGS}
-LIBS	:= -L${LIBSPATH} -I${INCSPATH} ${XLIBS} ${JSONLIBS} -lmsc -ldl -lpthread -lasound  -lXtst
+WNCKFLAGS = `pkg-config --cflags libwnck-3.0`
+WNCKLIBS  = `pkg-config --libs libwnck-3.0`
+
+CFLAGS  = -Wall -g -L${LIBSPATH} -I${INCSPATH} ${JSONFLAGS} ${XCFLAGS} ${WNCKFLAGS}
+LIBS	:= -L${LIBSPATH} -I${INCSPATH} ${XLIBS} ${JSONLIBS} ${WNCKLIBS} -lmsc -ldl -lpthread -lasound  -lXtst
 
 vpath %.cpp ${SRCPATH}
 

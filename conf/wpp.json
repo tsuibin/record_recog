@@ -3,12 +3,12 @@
 	"index":
 	[
 		{
-			"speech":"新建标签",
-			"cmd":"0xffe1 0xffe3 0x0054"
+			"speech":"保存",
+			"cmd":"0xffe3 0x0053"
 		},
 		{
-			"speech":"新建窗口",
-			"cmd":"0xffe1 0xffe3 0x004e"
+			"speech":"换行",
+			"cmd":"0xff0d"
 		},
 		{
 			"speech":"全屏",
@@ -29,6 +29,22 @@
 		{
 			"speech":"关闭",
 			"cmd":"0xffe9 0xffc1"
+		},
+		{
+			"speech":"回到开头",
+			"cmd":"0xff50"
+		},
+		{
+			"speech":"跳到结尾",
+			"cmd":"0xff57"
+		},
+		{
+			"speech":"上一页",
+			"cmd":"0xff55"
+		},
+		{
+			"speech":"下一页",
+			"cmd":"0xff56"
 		}
 	]
 }

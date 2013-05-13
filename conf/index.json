@@ -36,6 +36,13 @@
 			"title":"",
 			"config":"",
 			"type":""
+		},
+		{
+			"speech":"演示文稿",
+			"name":"wpp",
+			"title":"Wpp",
+			"config":"./conf/wpp.json",
+			"type":"keys"
 		}
 	]
 }

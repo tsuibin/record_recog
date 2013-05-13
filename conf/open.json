@@ -21,6 +21,10 @@
 		{
 			"speech":"deepin-screenshot",
 			"cmd":"deepin-screenshot > /dev/null &"
+		},
+		{
+			"speech":"wpp",
+			"cmd":"wpp > /dev/null &"
 		}
 	]
 }

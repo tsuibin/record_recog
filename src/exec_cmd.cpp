@@ -128,7 +128,8 @@ void open_process(char *cmd_buf, char *exec_buf, char *process_name)
 		}
 	} else {
 		printf("open process : %s...\n", process_name );
-		if ( set_focus() == -1 ) {
+		//if ( set_focus() == -1 ) {
+		if ( activate_win() == -1 ) {
 			// 进程存在，但为打开窗口
 			//search_str(process_name, exec_buf, OPEN_FILE);
 			ParseJsonFromFile(process_name, exec_buf, OPEN_JSON);
@@ -137,29 +138,4 @@ void open_process(char *cmd_buf, char *exec_buf, char *process_name)
 			}
 		}
 	}
-}
-
-/*
- * 获取进程 ID
- */
-unsigned long get_pid_via_name( char *process_name )
-{
-	char buf[1024];
-	unsigned long pid = 0;
-	FILE *fp = NULL;
-	
-	printf("get_pid_via_name : %s\n", process_name);
-	sprintf( buf, "ps aux | grep %s | sed -n 1p | awk '{print $2}' > /tmp/pid", 
-			process_name );
-	system(buf);
-	
-	if ( (fp = fopen("/tmp/pid", "r")) == NULL ) {
-		sys_err("get_pid failed...\n");
-		return 0;
-	}
-	fscanf(fp, "%lud", &pid);
-	fclose(fp);
-	printf("get_pid_via_name : %lu\n", pid);
-	
-	return pid;
 }

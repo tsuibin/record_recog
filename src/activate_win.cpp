@@ -1,7 +1,65 @@
 #include "my_xlib.h"
+#include <libwnck/libwnck.h>
 
 extern Window match_wid;
 extern struct process_info cur_process;
+
+int activate_win()
+{
+	WnckScreen *screen = NULL;
+	GList *window_l = NULL;
+	int flag = 0;
+	int pid = get_pid_via_name(cur_process.name);
+
+	gdk_init( NULL, NULL );
+	screen = wnck_screen_get_default();
+	wnck_screen_force_update(screen);
+
+	window_l = wnck_screen_get_windows(screen);
+	for ( ; window_l != NULL; window_l = window_l->next ) {
+		WnckWindow *window = WNCK_WINDOW(window_l->data);
+		if ( wnck_window_get_window_type(window) != WNCK_WINDOW_NORMAL ) {
+			continue;
+		}
+		if ( pid == wnck_window_get_pid(window) ) {
+			match_wid = wnck_window_get_xid(window);
+			wnck_window_activate(window, 1);
+			flag = 1;
+			break;
+		}
+	}
+	
+	if ( flag == 0 ) {
+		return -1;
+	}
+
+	return 0;
+}
+
+/*
+ * 获取进程 ID
+ */
+int get_pid_via_name( char *process_name )
+{
+	char buf[1024];
+	int pid = 0;
+	FILE *fp = NULL;
+	
+	printf("get_pid_via_name : %s\n", process_name);
+	sprintf( buf, "ps aux | grep %s | sed -n 1p | awk '{print $2}' > /tmp/pid", 
+			process_name );
+	system(buf);
+	
+	if ( (fp = fopen("/tmp/pid", "r")) == NULL ) {
+		sys_err("get_pid failed...\n");
+		return 0;
+	}
+	fscanf(fp, "%d", &pid);
+	fclose(fp);
+	printf("get_pid_via_name : %d\n", pid);
+	
+	return pid;
+}
 
 /*
  * 激活窗口

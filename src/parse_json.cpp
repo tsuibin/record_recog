@@ -43,6 +43,7 @@ int ParseJsonFromFile(const char *buf, char *exec_buf, const char *file)
 				memcpy(exec_buf, tmp, strlen(tmp));
 				
 				flag = 1;
+				sys_says("ParseJsonFromFile ret : %s\n", exec_buf);
 				break;
 			}
 		}

@@ -13,6 +13,4 @@ void has_set_config(char *cmd_buf, char *exec_buf, int *keys);
 int is_process_open(char *buf);
 void open_process(char *cmd_buf, char *exec_buf, char *process_name);
 
-unsigned long get_pid_via_name( char *process_name );
-
 #endif

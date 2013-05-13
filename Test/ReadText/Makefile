@@ -6,7 +6,7 @@ CCX=g++
 PROG_NAME	= read-text
 SRCPATH=./
 INCSPATH=../../include
-LIBSPATH=../../bin
+LIBSPATH=../../bin/x86_64
 
 CFLAGS  = -Wall -g -L${LIBSPATH} -I${INCSPATH}
 LIBS	:= -L${LIBSPATH} -I${INCSPATH} -lmsc -ldl -lpthread -lasound
@@ -18,13 +18,13 @@ OBJS := my_qtts.o read_wav.o my_init.o main.o
 all : ${PROG_NAME}
 
 ${PROG_NAME} : ${OBJS}
-	${CCX} -m32 -o $@ $^ ${LIBS}
+	${CCX}  -o $@ $^ ${LIBS}
 
 %.o : %.cpp
-	${CCX} -m32 ${CFLAGS} -c $<
+	${CCX}  ${CFLAGS} -c $<
 	
 %.o : %.c
-	${CC} -m32 ${CFLAGS} -c $<
+	${CC}  ${CFLAGS} -c $<
 
 clean :
 	rm -rf ${PROG_NAME} *.o

@@ -36,7 +36,7 @@ void read_wav_from_file(const char *text)
 		if ( strlen(buf) < 1 ) {
 			continue;
 		}
-		sys_says("buf : %s\nlen : %d\n", buf, strlen(buf));
+		sys_says("buf : %s\nlen : %lu\n", buf, strlen(buf));
 		if ( SpeechSynth(buf, READ_WAV) == -1 ) {
 			sys_says("SpeechSynth failed...\n");
 			continue;
@@ -52,7 +52,7 @@ void read_wav_from_file(const char *text)
 		sprintf( read_tmp, "aplay -f S16_LE -c 1 -r 16000 %s", READ_WAV );
 		system(read_tmp);
 		
-		system("rm -f /tmp/read_wav.wav");
+		//system("rm -f /tmp/read_wav.wav");
 		sys_says("echo ...\n");
 		system("echo > /tmp/xsel_out");
 		sys_says("xsel clear ...\n");

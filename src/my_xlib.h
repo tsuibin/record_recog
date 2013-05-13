@@ -23,4 +23,8 @@ void get_wid(char *name);
 int index_str(char *name, char *src);
 void sys_wm_wid();
 
+/* libwnck */
+int activate_win();
+int get_pid_via_name( char *process_name );
+
 #endif
