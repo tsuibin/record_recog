@@ -10,7 +10,7 @@ ARCH = $(shell uname -m)
 ifeq ($(ARCH),x86_64)
 LIBSPATH=bin/x86_64
 else
-LIBSPATH=bin/i386
+LIBSPATH=bin/i686
 endif
 
 PROG_NAME	= msc_test

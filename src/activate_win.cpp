@@ -1,5 +1,8 @@
 #include "my_xlib.h"
+
+#define WNCK_I_KNOW_THIS_IS_UNSTABLE
 #include <libwnck/libwnck.h>
+#undef  WNCK_I_KNOW_THIS_IS_UNSTABLE
 
 extern Window match_wid;
 extern struct process_info cur_process;
