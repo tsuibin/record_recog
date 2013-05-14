@@ -2,6 +2,27 @@
 
 int synth_first = 1;
 
+void read_wav_from_str(const char *str)
+{
+	char read_tmp[READ_LINE];
+
+	if ( str == NULL ) {
+		sys_says("read_wav_from_file arguments error...\n");
+		return ;
+	}
+
+	sys_says("str : %s\nlen : %lu\n", str, strlen(str));
+	if ( SpeechSynth(str, READ_WAV) == -1 ) {
+		sys_says("SpeechSynth failed...\n");
+		return;
+	}
+
+	sprintf( read_tmp, "aplay -f S16_LE -c 1 -r 16000 %s", READ_WAV );
+	system(read_tmp);
+
+	return;
+}
+
 /*
  * 朗读文件中的文本
  */

@@ -15,9 +15,9 @@ int ParseJsonFromFile(const char *buf, char *exec_buf,
 	Json::Reader reader;
 	Json::Value  index;
 	std::string  str;
-	int i;
+	int i, j;
 	int flag = 0;
-	int arraylen;
+	int arraylen, len2;
 	char tmp[BUF_LEN];
 
 	sys_says("ParseJsonFromFile : open %s\n", file);
@@ -33,24 +33,33 @@ int ParseJsonFromFile(const char *buf, char *exec_buf,
 		std::cout<<"arraylen : "<<arraylen<<endl;
 
 		for ( i = 0; i < arraylen; i++ ) {
-			str = index["index"][i]["speech"].asString();
-			memset(tmp, 0, BUF_LEN);
-			strcpy(tmp, str.c_str());
-			printf("tmp : %s\tlen : %lu\n", tmp, strlen(tmp));
+			len2 = index["index"][i]["input"].size();
+			std::cout << "len2 : " << len2 << endl;
 
-			if ( memcmp(buf, tmp, strlen(buf)) == 0 ) {
-				str = index["index"][i]["cmd"].asString();
+			for ( j = 0; j < len2; j++ ) {
+				str = index["index"][i]["input"][j]["speech"].asString();
 				memset(tmp, 0, BUF_LEN);
 				strcpy(tmp, str.c_str());
-				memcpy(exec_buf, tmp, strlen(tmp));
-				
-				str = index["index"][i]["type"].asString();
-				memset(tmp, 0, BUF_LEN);
-				strcpy(tmp, str.c_str());
-				memcpy(type_buf, tmp, strlen(tmp));
-				
-				flag = 1;
-				sys_says("ParseJsonFromFile ret : %s\n", exec_buf);
+				printf("tmp : %s\tlen : %lu\n", tmp, strlen(tmp));
+
+				if ( memcmp(buf, tmp, strlen(buf)) == 0 ) {
+					str = index["index"][i]["cmd"].asString();
+					memset(tmp, 0, BUF_LEN);
+					strcpy(tmp, str.c_str());
+					memcpy(exec_buf, tmp, strlen(tmp));
+					
+					str = index["index"][i]["type"].asString();
+					memset(tmp, 0, BUF_LEN);
+					strcpy(tmp, str.c_str());
+					memcpy(type_buf, tmp, strlen(tmp));
+					
+					flag = 1;
+					sys_says("ParseJsonFromFile ret : %s\n", exec_buf);
+					break;
+				}
+			}
+
+			if ( flag ) {
 				break;
 			}
 		}
@@ -69,9 +78,9 @@ int ParseJsonIndex(const char *buf)
 	Json::Reader reader;
 	Json::Value  index;
 	std::string  str;
-	int i;
+	int i, j;
 	int flag = 0;
-	int arraylen;
+	int arraylen, len2;
 	char tmp[BUF_LEN];
 
 	printf("buf : %s\tlen : %lu\n", buf, strlen(buf));
@@ -84,30 +93,37 @@ int ParseJsonIndex(const char *buf)
 		std::cout<<"arraylen : "<<arraylen<<endl;
 
 		for ( i = 0; i < arraylen; i++ ) {
-			str = index["index"][i]["speech"].asString();
-			//std::cout<<"speech : "<<str<<endl;
-			
-			memset(tmp, 0, BUF_LEN);
-			strcpy(tmp, str.c_str());
-			printf("tmp : %s\tlen : %lu\n", tmp, strlen(tmp));
-			
-			if ( memcmp(buf, tmp, strlen(buf)) == 0 ) {
-				str = index["index"][i]["name"].asString();
+			len2 = index["index"][i]["input"].size();
+			std::cout << "len2 : " << len2 << endl;
+
+			for ( j = 0; j < len2; j++ ) {
+				str = index["index"][i]["input"][j]["speech"].asString();
 				memset(tmp, 0, BUF_LEN);
 				strcpy(tmp, str.c_str());
-				memcpy(cur_process.name, tmp, strlen(tmp));
+				printf("tmp : %s\tlen : %lu\n", tmp, strlen(tmp));
 				
-				str = index["index"][i]["title"].asString();
-				memset(tmp, 0, BUF_LEN);
-				strcpy(tmp, str.c_str());
-				memcpy(cur_process.item, tmp, strlen(tmp));
-				
-				str = index["index"][i]["config"].asString();
-				memset(tmp, 0, BUF_LEN);
-				strcpy(tmp, str.c_str());
-				memcpy(cur_process.config, tmp, strlen(tmp));
-				
-				flag = 1;
+				if ( memcmp(buf, tmp, strlen(buf)) == 0 ) {
+					str = index["index"][i]["name"].asString();
+					memset(tmp, 0, BUF_LEN);
+					strcpy(tmp, str.c_str());
+					memcpy(cur_process.name, tmp, strlen(tmp));
+					
+					str = index["index"][i]["title"].asString();
+					memset(tmp, 0, BUF_LEN);
+					strcpy(tmp, str.c_str());
+					memcpy(cur_process.item, tmp, strlen(tmp));
+					
+					str = index["index"][i]["config"].asString();
+					memset(tmp, 0, BUF_LEN);
+					strcpy(tmp, str.c_str());
+					memcpy(cur_process.config, tmp, strlen(tmp));
+					
+					flag = 1;
+					break;
+				}
+			}
+
+			if ( flag ) {
 				break;
 			}
 		}

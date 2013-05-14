@@ -36,7 +36,7 @@ void init_deamon()
 		close(i);
 	}*/
 
-	chdir("/home/iwen/Yunio/Deepin/record_speech");	//改变工作目录到 /tmp
+	chdir("/home/iwen/Yunio/Deepin/SpeechCtrl");	//改变工作目录到 /tmp
 	umask(0);	//重设文件创建掩码
 
 	return ;

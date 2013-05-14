@@ -140,7 +140,7 @@ int MySndRecord(int timenum, const char *output_file)
 	while (loops > 0) {
 		loops--;
 		if ( loops == 0 ) {
-			if (record_abort) {
+			if (!record_abort) {
 				loops = 2;
 			}
 		}

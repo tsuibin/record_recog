@@ -3,32 +3,62 @@
 	"index":
 	[
 		{
-			"speech":"firefox",
+			"input":
+			[
+				{
+					"speech":"firefox"
+				}
+			],
 			"cmd":"firefox > /dev/null &",
 			"type":"cmd"
 		},
 		{
-			"speech":"gnome-terminal",
+			"input":
+			[
+				{
+					"speech":"gnome-terminal"
+				}
+			],
 			"cmd":"gnome-terminal",
 			"type":"cmd"
 		},
 		{
-			"speech":"deepin-music-player",
+			"input":
+			[
+				{
+					"speech":"deepin-music-player"
+				}
+			],
 			"cmd":"deepin-music-player > /dev/null  &",
 			"type":"cmd"
 		},
 		{
-			"speech":"nautilus",
+			"input":
+			[
+				{
+					"speech":"nautilus"
+				}
+			],
 			"cmd":"nautilus",
 			"type":"cmd"
 		},
 		{
-			"speech":"deepin-screenshot",
+			"input":
+			[
+				{
+					"speech":"deepin-screenshot"
+				}
+			],
 			"cmd":"deepin-screenshot > /dev/null &",
 			"type":"cmd"
 		},
 		{
-			"speech":"wpp",
+			"input":
+			[
+				{
+					"speech":"wpp"
+				}
+			],
 			"cmd":"wpp > /dev/null &",
 			"type":"cmd"
 		}

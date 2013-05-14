@@ -3,8 +3,12 @@
 #include "my_qtts.h"
 #include "exec_cmd.h"
 
+#include <sys/select.h>
+
 /* 录音线程 */
 void *record_start(void *arg);
+
+void close_fd();
 
 struct process_info cur_process;
 
@@ -12,10 +16,12 @@ int first_record;
 int record_abort = 0;
 int keys[KEY_LEN];
 
+int fd = -1;
+
 int main()
 {
-	int fd;
 	int flag;
+
 	char tmp[NAME_LEN];
 	char kbd_path[NAME_LEN];
 	char cmd_buf[BUF_LEN];
@@ -28,6 +34,7 @@ int main()
 	
 	struct input_event myinput;
 	
+	//atexit( close_fd );
 	//signal(SIGCHLD, SIG_IGN);
 	//init_deamon();
 	
@@ -54,11 +61,14 @@ int main()
 	//init_deamon();
 	while (1) {
 		memset(&myinput, 0, sizeof(myinput));
+
 		flag = read(fd, &myinput, sizeof(myinput));
 		if ( flag == -1 ) {
 			sys_says("read keyboard err : %s\n", strerror(errno));
 		} else if (flag == sizeof(myinput)) {
 			if (myinput.code == KEY_ESC) {
+				close(fd);
+				fd = -1;
 				break;
 			}
 
@@ -114,8 +124,9 @@ int main()
 			}
 		}
 	}
-	close(fd);
-
+	if ( fd != -1 ) {
+		close(fd);
+	}
 	return 0;
 }
 
@@ -135,4 +146,11 @@ void *record_start(void *arg)
 		}
 	//}
 	pthread_exit(NULL);
+}
+
+void close_fd()
+{
+	if ( fd != -1 ) {
+		close(fd);
+	}
 }

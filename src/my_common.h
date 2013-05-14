@@ -25,7 +25,7 @@
 #define sys_says(args ...) {fprintf(stdout, args);}
 
 #define KEY_LEN	6
-#define BUF_LEN	32
+#define BUF_LEN	80
 #define READ_LINE	1024
 
 

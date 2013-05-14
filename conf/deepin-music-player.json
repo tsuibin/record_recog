@@ -3,43 +3,76 @@
 	"index":
 	[
 		{
-			"speech":"播放",
+			"input":
+			[
+				{
+					"speech":"播放"
+				},
+				{
+					"speech":"暂停"
+				}
+			],
 			"cmd":"PlayPause",
 			"type":"func"
 		},
 		{
-			"speech":"暂停",
-			"cmd":"PlayPause",
-			"type":"func"
-		},
-		{
-			"speech":"上一首",
+			"input":
+			[
+				{
+					"speech":"上一首"
+				}
+			],
 			"cmd":"Prev",
 			"type":"func"
 		},
 		{
-			"speech":"下一首",
+			"input":
+			[
+				{
+					"speech":"下一首"
+				}
+			],
 			"cmd":"Next",
 			"type":"func"
 		},
 		{
-			"speech":"快进",
+			"input":
+			[
+				{
+					"speech":"快进"
+				}
+			],
 			"cmd":"Forward",
 			"type":"func"
 		},
 		{
-			"speech":"重放",
+			"input":
+			[
+				{
+					"speech":"重放"
+				}
+			],
 			"cmd":"Rewind",
 			"type":"func"
 		},
 		{
-			"speech":"停止",
+			"input":
+			[
+				{
+					"speech":"停止"
+				}
+			],
 			"cmd":"Stop",
 			"type":"func"
 		},
 		
 		{
-			"speech":"退出",
+			"input":
+			[
+				{
+					"speech":"退出"
+				}
+			],
 			"cmd":"Quit",
 			"type":"func"
 		}

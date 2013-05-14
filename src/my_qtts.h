@@ -27,6 +27,7 @@ void MyTextPut(const char *sessionId, const char *synthText,
 
 int SpeechSynth(const char *text, const char *outFile);	
 
+void read_wav_from_str(const char *str);
 void read_wav_from_file(const char *text);
 void read_xsel();
 #endif

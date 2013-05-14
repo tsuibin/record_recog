@@ -3,62 +3,126 @@
 	"index":
 	[
 		{
-			"speech":"新建标签",
+			"input":
+			[
+				{
+					"speech":"新建标签"
+				}
+			],
+			//"speech":"新建标签",
 			"cmd":"0xffe3 0x0054",	/* CTRL + T */
 			"type":"keys"
 		},
 		{
-			"speech":"新建窗口",
+			"input":
+			[
+				{
+					"speech":"新建窗口"
+				}
+			],
 			"cmd":"0xffe3 0x004e",	/* CTRL + N */
 			"type":"keys"
 		},
 		{
-			"speech":"全屏",
+			"input":
+			[
+				{
+					"speech":"全屏"
+				}
+			],
 			"cmd":"0xffc8",	/* F11 */
 			"type":"keys"
 		},
 		{
-			"speech":"退出全屏",
+			"input":
+			[
+				{
+					"speech":"退出全屏"
+				}
+			],
 			"cmd":"0xffc8",	/* F11 */
 			"type":"keys"
 		},
 		{
-			"speech":"最大化",
+			"input":
+			[
+				{
+					"speech":"最大化"
+				}
+			],
 			"cmd":"0xffe9 0xffc2",	/* ALT + F5 */
 			"type":"keys"
 		},
 		{
-			"speech":"恢复",
+			"input":
+			[
+				{
+					"speech":"恢复"
+				}
+			],
 			"cmd":"0xffe9 0xffc3",	/* ALT + F6 */
 			"type":"keys"
 		},
 		{
-			"speech":"关闭",
+			"input":
+			[
+				{
+					"speech":"关闭"
+				}
+			],
 			"cmd":"0xffe9 0xffc1",	/* ALT + F4 */
 			"type":"keys"
 		},
 		{
-			"speech":"回到开头",
+			"input":
+			[
+				{
+					"speech":"回到开头"
+				}
+			],
 			"cmd":"0xff50",	/* Home */
 			"type":"keys"
 		},
 		{
-			"speech":"跳到结尾",
+			"input":
+			[
+				{
+					"speech":"跳到结尾"
+				}
+			],
 			"cmd":"0xff57",	/* End */
 			"type":"keys"
 		},
 		{
-			"speech":"上一页",
+			"input":
+			[
+				{
+					"speech":"上一页"
+				}
+			],
 			"cmd":"0xff55",	/* PageUp */
 			"type":"keys"
 		},
 		{
-			"speech":"下一页",
+			"input":
+			[
+				{
+					"speech":"下一页"
+				}
+			],
 			"cmd":"0xff56",	/* PageDown */
 			"type":"keys"
 		},
 		{
-			"speech":"百度",
+			"input":
+			[
+				{
+					"speech":"百度"
+				},
+				{
+					"speech":"打开百度"
+				}
+			],
 			"cmd":"firefox -new-tab www.baidu.com > /dev/null &",
 			"type":"cmd"
 		}
