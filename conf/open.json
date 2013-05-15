@@ -1,0 +1,66 @@
+/* 程序名	命令 */
+{
+	"index":
+	[
+		{
+			"input":
+			[
+				{
+					"speech":"firefox"
+				}
+			],
+			"cmd":"firefox > /dev/null &",
+			"type":"cmd"
+		},
+		{
+			"input":
+			[
+				{
+					"speech":"gnome-terminal"
+				}
+			],
+			"cmd":"gnome-terminal",
+			"type":"cmd"
+		},
+		{
+			"input":
+			[
+				{
+					"speech":"deepin-music-player"
+				}
+			],
+			"cmd":"deepin-music-player > /dev/null  &",
+			"type":"cmd"
+		},
+		{
+			"input":
+			[
+				{
+					"speech":"nautilus"
+				}
+			],
+			"cmd":"nautilus",
+			"type":"cmd"
+		},
+		{
+			"input":
+			[
+				{
+					"speech":"deepin-screenshot"
+				}
+			],
+			"cmd":"deepin-screenshot > /dev/null &",
+			"type":"cmd"
+		},
+		{
+			"input":
+			[
+				{
+					"speech":"wpp"
+				}
+			],
+			"cmd":"wpp > /dev/null &",
+			"type":"cmd"
+		}
+	]
+}

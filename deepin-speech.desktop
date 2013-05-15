@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Deepin Speech
+Name[zh_CN]=深度语音
+Comment=Play your music collection
+Comment[zh_CN]=为您播放本地及网络音频流
+GenericName=Speech
+Exec=/usr/local/bin/deepin-speech &
+Icon=deepin-music-player
+Type=Application
+Categories=AudioVideo;Player;GTK;
+StartupNotify=true

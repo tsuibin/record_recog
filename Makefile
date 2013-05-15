@@ -1,32 +1,51 @@
 #common makefile header
 
-CC=gcc
-CCX=g++
+CC = gcc
+CXX = g++
+
+ARCH = $(shell uname -m)
+#BIT32:=i686
+#BIT64:=x86_64 
+
+ifeq ($(ARCH),x86_64)
+LIBSPATH=bin/x86_64
+else
+LIBSPATH=bin/i686
+endif
 
 PROG_NAME	= msc_test
 SRCPATH=src
 INCSPATH=include
-LIBSPATH=bin
 
-LIBS	:= -L${LIBSPATH} -I${INCSPATH} -lmsc -ldl -lpthread -lasound
+XCFLAGS  := `pkg-config --cflags x11`
+XLIBS	:= `pkg-config --libs x11`
+
+JSONFLAGS = `pkg-config --cflags jsoncpp`
+JSONLIBS  = `pkg-config --libs jsoncpp`
+
+WNCKFLAGS = `pkg-config --cflags libwnck-3.0`
+WNCKLIBS  = `pkg-config --libs libwnck-3.0`
+
+CFLAGS  = -Wall -g -L${LIBSPATH} -I${INCSPATH} ${JSONFLAGS} ${XCFLAGS} ${WNCKFLAGS}
+LIBS	:= -L${LIBSPATH} -I${INCSPATH} ${XLIBS} ${JSONLIBS} ${WNCKLIBS} -lmsc -ldl -lpthread -lasound  -lXtst
 
 vpath %.cpp ${SRCPATH}
 
-#OBJS := test_alsa.o my_alsa.o
-#OBJS := my_qisr.o test_qisr.o
-#OBJS := my_qisr.o my_alsa.o test_record.o
-OBJS := my_qisr.o my_alsa.o record_recog.o parse_command.o
+#OBJS := my_qtts.o read_wav.o
+#OBJS := my_qisr.o my_alsa.o main_test.o parse_command.o send_keys.o
+#OBJS := my_qisr.o my_alsa.o my_qtts.o parse_speech.o activate_win.o send_keys.o music_func.o exec_cmd.o parse_json.o read_wav.o my_init.o main.o
+OBJS := my_qisr.o my_alsa.o my_qtts.o parse_speech.o activate_win.o send_keys.o music_func.o exec_cmd.o parse_json.o read_wav.o my_init.o main_thread.o
 
 all : ${PROG_NAME}
 
 ${PROG_NAME} : ${OBJS}
-	${CCX} -m32 -o $@ $^ ${LIBS}
+	${CXX} -o $@ $^ ${LIBS}
 
 %.o : %.cpp
-	${CCX} -m32 -c $< ${LIBS}
+	${CXX} ${CFLAGS} -c $<
 	
 %.o : %.c
-	${CC} -m32 -c $< ${LIBS}
+	${CC} ${CFLAGS} -c $<
 
 clean :
 	rm -rf ${PROG_NAME} *.o

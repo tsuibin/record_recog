@@ -1,3 +1,37 @@
 2013-04-25
 录音并识别。
 录音使用 alsa 库，语音识别使用科大讯飞提供的接口。
+
+运行时请设置：LD_LIBRARY_PATH
+如：
+	ARCH=`arch`
+	MSCLIBS_PATH=./bin/$ARCH
+	export LD_LIBRARY_PATH=${MSCLIBS_PATH} ：${LD_LIBRARY_PATH}
+
+MSCLIBS_PATH : 为科大讯飞库的位置，请根据系统架构具体选择。
+
+依赖：
+gksu
+xsel
+#wmctrl
+libwnck
+libasound2-dev
+libx11-data
+libx11-dev
+libxtst-dev
+libxmu-dev
+libdbus-1-dev
+libjsoncpp-dev
+libdbus-glib-1-dev
+
+程序设计思想请见：speech_struct.pdf
+
+运行说明：
+开启软件，按下 CTRL 键（不低于2s）输入语音。
+语音朗读：先用鼠标选中文字，然后按下 ALT 键
+
+命令说明：
+index.json : 存放开启软件的命令，并设置此软件的程序名、窗口标题、配置文件和命令类型。在这个文件中匹配到输入的命令后，就会设置其参数。再次输入语音命令的话就会在此软件的配置文件中搜索。
+appname.json : 存放应用的语音输入及对应的命令。
+open.json : 存放开启软件的命令。
+command.conf : 存放额外的命令.

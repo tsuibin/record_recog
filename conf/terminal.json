@@ -1,0 +1,41 @@
+/* 语音输入   按键 */
+{
+	"index":
+	[
+		{
+			"speech":"新建标签",
+			"cmd":"0xffe1 0xffe3 0x0054",
+			"type":"keys"
+		},
+		{
+			"speech":"新建窗口",
+			"cmd":"0xffe1 0xffe3 0x004e",
+			"type":"keys"
+		},
+		{
+			"speech":"全屏",
+			"cmd":"0xffc8",
+			"type":"keys"
+		},
+		{
+			"speech":"退出全屏",
+			"cmd":"0xffc8",
+			"type":"keys"
+		},
+		{
+			"speech":"最大化",
+			"cmd":"0xffe9 0xffc2",
+			"type":"keys"
+		},
+		{
+			"speech":"恢复",
+			"cmd":"0xffe9 0xffc3",
+			"type":"keys"
+		},
+		{
+			"speech":"关闭",
+			"cmd":"0xffe9 0xffc1",
+			"type":"keys"
+		}
+	]
+}

@@ -1,5 +1,4 @@
 #include "my_alsa.h"
-#include "record_recog.h"
 
 extern int first_record;
 extern int record_abort;
@@ -12,7 +11,8 @@ void MySndOpen (snd_pcm_t **pcm, const char *name,
 	ret = snd_pcm_open(pcm, name, stream, mode);
 	if (ret < 0) {
 		fprintf(stderr, "unable to open pcm device: %s\n", snd_strerror(ret));
-		exit(1);
+		//exit(1);
+		return;
 	}
 }
 
@@ -23,7 +23,8 @@ void MySndParams(snd_pcm_t *pcm, snd_pcm_hw_params_t *params)
 	ret = snd_pcm_hw_params(pcm, params);
 	if (ret != 0) {
 		fprintf(stderr, "unable to set hw parameters: %s\n", snd_strerror(ret));
-		exit(1);
+		//exit(1);
+		return;
 	}
 }
 
@@ -50,16 +51,21 @@ void MySndEnd(snd_pcm_t *pcm)
 	ret = snd_pcm_drain(pcm);
 	if (ret != 0) {
 		fprintf(stderr, "unable to set hw parameters: %s\n", snd_strerror(ret));
-		exit(1);
+		//exit(1);
+		return;
 	}
 	
 	ret = snd_pcm_close(pcm);
 	if (ret != 0) {
 		fprintf(stderr, "unable to set hw parameters: %s\n", snd_strerror(ret));
-		exit(1);
+		//exit(1);
+		return;
 	}
 }
 
+/*
+ * 录音
+ */
 int MySndRecord(int timenum, const char *output_file)
 {
 	long loops;	//录音的秒数
@@ -135,7 +141,7 @@ int MySndRecord(int timenum, const char *output_file)
 		loops--;
 		if ( loops == 0 ) {
 			if (!record_abort) {
-				loops = 3;
+				loops = 2;
 			}
 		}
 		MySndReadi(handle, buffer, frames);
@@ -150,6 +156,7 @@ int MySndRecord(int timenum, const char *output_file)
 	fclose(fp_out);
 	MySndEnd(handle);
 	free(buffer);
+	fprintf(stderr, "录音完毕...\n");
 
 	return 0;
 }
