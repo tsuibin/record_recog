@@ -5,12 +5,15 @@ CCX=g++
 
 PROG_NAME	= xlib_test
 
-CFLAGS  := `pkg-config --cflags x11`
-LIBS	:= `pkg-config --libs x11`
+GLIBFLAGS = `pkg-config --cflags glib-2.0`
+GLIBLIBS = `pkg-config --libs glib-2.0`
+
+CFLAGS  := -Wall -g `pkg-config --cflags x11` ${GLIBFLAGS}
+LIBS	:= `pkg-config --libs x11` ${GLIBLIBS}
 
 #vpath %.cpp ${SRCPATH}
 
-OBJS := xlib1.o
+OBJS := xlib2.o
 #OBJS := get_pro.o
 #OBJS := my_qisr.o test_qisr.o
 #OBJS := my_qisr.o my_alsa.o test_record.o
@@ -18,13 +21,13 @@ OBJS := xlib1.o
 all : ${PROG_NAME}
 
 ${PROG_NAME} : ${OBJS}
-	${CCX} -m32  -o $@ $^ ${LIBS} -lXtst
+	${CCX} -o $@ $^ ${LIBS} -lXtst
 
 %.o : %.cpp
-	${CCX} -m32 -c ${CFLAGS} $<
+	${CCX} -c ${CFLAGS} $<
 	
 %.o : %.c
-	${CC} -m32  ${CFLAGS} -c $<
+	${CC} ${CFLAGS} -c $<
 
 clean :
 	rm -rf ${PROG_NAME} *.o

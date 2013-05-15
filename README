@@ -14,7 +14,7 @@ MSCLIBS_PATH : 为科大讯飞库的位置，请根据系统架构具体选择�
 gksu
 xsel
 #wmctrl
-libwnck
+libwnck-3
 libasound2-dev
 libx11-data
 libx11-dev
@@ -23,8 +23,6 @@ libxmu-dev
 libdbus-1-dev
 libjsoncpp-dev
 libdbus-glib-1-dev
-
-程序设计思想请见：speech_struct.pdf
 
 运行说明：
 开启软件，按下 CTRL 键（不低于2s）输入语音。
@@ -35,3 +33,5 @@ index.json : 存放开启软件的命令，并设置此软件的程序名、窗�
 appname.json : 存放应用的语音输入及对应的命令。
 open.json : 存放开启软件的命令。
 command.conf : 存放额外的命令.
+
+程序设计思想请见：speech_struct.pdf

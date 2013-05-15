@@ -8,6 +8,9 @@
 #include <X11/cursorfont.h>
 #include <X11/Xmu/WinUtil.h>
 #include <X11/extensions/XTest.h>
+#include <gtk/gtk.h>
+#include <gdk/gdk.h>
+#include <glib.h>
 
 /* 执行指令 */
 void exec_cmd_via_keys(int *keys);
@@ -26,5 +29,8 @@ void sys_wm_wid();
 /* libwnck */
 int activate_win();
 int get_pid_via_name( char *process_name );
+
+Window get_active_window();
+gchar *get_window_class(Window win);
 
 #endif

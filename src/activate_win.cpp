@@ -7,6 +7,33 @@
 extern Window match_wid;
 extern struct process_info cur_process;
 
+Window get_active_window()
+{
+	Window active_xid = 0;
+	WnckScreen *screen = NULL;
+	WnckWindow *active_win = NULL;
+	GList *window_l = NULL;
+
+	gdk_init( NULL, NULL );
+	screen = wnck_screen_get_default();
+	wnck_screen_force_update(screen);
+	active_win = wnck_screen_get_active_window(screen);
+
+	window_l = wnck_screen_get_windows(screen);
+	for ( ; window_l != NULL; window_l = window_l->next ) {
+		WnckWindow *window = WNCK_WINDOW(window_l->data);
+		if ( wnck_window_get_window_type(window) != WNCK_WINDOW_NORMAL ) {
+			continue;
+		}
+		if ( window == active_win ) {
+			active_xid = wnck_window_get_xid(window);
+			break;
+		}
+	}
+	
+	return active_xid;
+}
+
 int activate_win()
 {
 	WnckScreen *screen = NULL;

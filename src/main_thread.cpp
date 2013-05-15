@@ -2,6 +2,7 @@
 #include "my_init.h"
 #include "my_qtts.h"
 #include "exec_cmd.h"
+#include "my_xlib.h"
 
 #include <signal.h>
 #include <sys/select.h>
@@ -10,9 +11,11 @@
 void *record_start(void *arg);
 /* 读键盘 */
 void *read_keyboard(void *arg);
+void *listen_window(void *arg);
 
 void catch_user1(int signo);
 void catch_user2(int signo);
+void catch_alrm(int signo);
 
 void close_fd();
 
@@ -27,17 +30,19 @@ pthread_t recd_thrd;
 struct timeval tvpressed;
 struct timeval tvreleased;
 
-int main()
+int main(int argc, char* argv[])
 {
 	int ret;
 
 	//char tmp[NAME_LEN];
 	char kbd_path[NAME_LEN];
 	pthread_t read_thrd;
+	pthread_t listen_win_thrd;
 	
 	signal(SIGCHLD, SIG_IGN);
 	init_deamon();
 	
+	gtk_init(&argc, &argv);
 	memset(keys, 0, KEY_LEN * sizeof(int));
 
 	get_dev_path(kbd_path);
@@ -49,12 +54,19 @@ int main()
 	
 	signal(SIGUSR1, catch_user1);
 	signal(SIGUSR2, catch_user2);
+	signal(SIGALRM, catch_alrm);
 	ret = pthread_create(&read_thrd, 0, read_keyboard, kbd_path);
 	if ( ret != 0 ) {
 		sys_says( "create read keyboard thread failed : %s\n", strerror(errno) );
 		exit(-1);
 	}
-	
+	/*
+	ret = pthread_create(&listen_win_thrd, 0, listen_window, 0);
+	if ( ret != 0 ) {
+		sys_says( "create listen window thread failed : %s\n", strerror(errno) );
+		exit(-1);
+	}
+	*/
 	pthread_join(read_thrd, NULL);
 	read_wav_from_str("程序退出");
 	sys_says("程序退出...\n\n");
@@ -146,11 +158,11 @@ void *record_start(void *arg)
 {
 	int ret = 0;
 	
-	ret = MySndRecord(2, INPUT_FILE);
+	/*ret = MySndRecord(2, INPUT_FILE);
 	if ( ret == -1 ) {
 		fprintf(stderr, "录音失败...\n");
 		exit(-1);
-	}
+	}*/
 		
 	pthread_exit(NULL);
 }
@@ -178,7 +190,7 @@ void catch_user2(int signo)
 		return;
 	}
 	
-	pthread_join(recd_thrd, NULL);
+	//pthread_join(recd_thrd, NULL);
 	parse_record(cmd_buf);
 	if ( cmd_buf[0] == '\0' ) {
 		return;
@@ -191,6 +203,47 @@ void catch_user2(int signo)
 		fprintf(stderr, "is_config_set\n");
 		has_set_config(cmd_buf, exec_buf, type_buf);
 	}
+}
+
+GdkFilterReturn child_handle_event( void *event1, GdkEvent *event2,
+							gpointer userdata )
+{
+	XEvent *xev = (XEvent*)event1;
+	
+	if ( xev->type == PropertyNotify ) {
+	//if ( xev->type == FocusIn ) {
+		g_print("child_handle_event\n");
+		kill(getpid(), SIGALRM);
+	}
+	
+	return GDK_FILTER_CONTINUE;
+}
+
+void *listen_window(void *arg)
+{
+	GdkWindow *window = NULL;
+	GdkScreen *screen = NULL;
+	
+	screen = gdk_screen_get_default();
+	window = gdk_screen_get_root_window(screen);
+	gdk_window_set_events (window, GDK_PROPERTY_CHANGE_MASK);
+	gdk_window_add_filter (window, child_handle_event, NULL);
+
+	gtk_main();
+	
+	pthread_exit(NULL);
+}
+
+void catch_alrm(int signo)
+{
+	char window_class[BUF_LEN];
+	gchar *tmp;
+	
+	tmp = get_window_class(get_active_window());
+	memset(window_class, 0, BUF_LEN);
+	memcpy(window_class, tmp, strlen(tmp));
+	g_free(tmp);
+	sys_says("window class name : %s\n", window_class);
 }
 
 void close_fd()
