@@ -29,3 +29,8 @@ music_source
 7_10
 .*swp
 output
+tmp
+rows
+wm_wid
+msc
+*.log

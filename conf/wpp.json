@@ -1,0 +1,50 @@
+/* 语音输入   按键 */
+{
+	"index":
+	[
+		{
+			"speech":"保存",
+			"cmd":"0xffe3 0x0053"
+		},
+		{
+			"speech":"换行",
+			"cmd":"0xff0d"
+		},
+		{
+			"speech":"全屏",
+			"cmd":"0xffc8"
+		},
+		{
+			"speech":"退出全屏",
+			"cmd":"0xffc8"
+		},
+		{
+			"speech":"最大化",
+			"cmd":"0xffe9 0xffc2"
+		},
+		{
+			"speech":"恢复",
+			"cmd":"0xffe9 0xffc3"
+		},
+		{
+			"speech":"关闭",
+			"cmd":"0xffe9 0xffc1"
+		},
+		{
+			"speech":"回到开头",
+			"cmd":"0xff50"
+		},
+		{
+			"speech":"跳到结尾",
+			"cmd":"0xff57"
+		},
+		{
+			"speech":"上一页",
+			"cmd":"0xff55"
+		},
+		{
+			"speech":"下一页",
+			"cmd":"0xff56"
+		}
+	]
+}
