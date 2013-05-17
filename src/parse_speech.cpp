@@ -1,7 +1,5 @@
 #include "parse_speech.h"
 
-extern struct process_info cur_process;
-
 /*
  * 处理音频文件
  */
@@ -9,7 +7,7 @@ void parse_record(char *cmd_buf)
 {
 	int ret;
 
-	memset(cmd_buf, 0, BUF_LEN);
+	memset(cmd_buf, 0, READ_LINE);
 
 	fprintf(stderr, "开始语音识别...\n");
 	sys_err("input : %s\n", INPUT_FILE);

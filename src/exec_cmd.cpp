@@ -26,7 +26,7 @@ void exec_cmd_via_type(char *exec_buf, char *type_buf)
  */
 int is_config_set()
 {
-	if (cur_process.config[0] == '\0' ) {
+	if (cur_process.table[0] == '\0' ) {
 		return 0;
 	} else {
 		return 1;
@@ -39,7 +39,8 @@ int is_config_set()
 void no_set_config(char *cmd_buf, char *exec_buf, char *type_buf)
 {
 	//search_index(cmd_buf);
-	ParseJsonIndex(cmd_buf);
+	//ParseJsonIndex(cmd_buf);
+	search_index_table();
 				
 	if ( cur_process.name[0] == '\0' ) {
 		return;
@@ -55,11 +56,11 @@ void has_set_config(char *cmd_buf, char *exec_buf, char *type_buf)
 {
 	sys_err("enter has_set_config...\n");
 	sys_says("cmd : %s\n", cmd_buf);
-	//search_str(cmd_buf, exec_buf, cur_process.config);
-	memset(exec_buf, 0, READ_LINE);
-	ParseJsonFromFile(cmd_buf, exec_buf, type_buf, cur_process.config);
+	memset(exec_buf, 0, EXEC_BUF);
+	//ParseJsonFromFile(cmd_buf, exec_buf, type_buf, cur_process.config);
+	search_table(cmd_buf, cur_process.table);
 	
-	sys_says("exec : %s\n", exec_buf);
+	sys_says("has_set_config exec : %s\n", exec_buf);
 	if ( exec_buf[0] != '\0' ) {
 		activate_win();
 		exec_cmd_via_type(exec_buf, type_buf);
@@ -108,8 +109,9 @@ void open_process(char *exec_buf, char *type_buf, char *process_name)
 		// 进程不存在
 		//search_str(process_name, exec_buf, OPEN_FILE);
 		sys_says("process_name : %s\n", process_name);
-		sys_says("OPEN_JSON : %s\n", OPEN_JSON);
-		ParseJsonFromFile(process_name, exec_buf, type_buf, OPEN_JSON);
+		//sys_says("OPEN_JSON : %s\n", OPEN_JSON);
+		//ParseJsonFromFile(process_name, exec_buf, type_buf, OPEN_JSON);
+		search_table(process_name, OPEN_TABLE);
 		sys_says("exec_buf : %s\n", exec_buf);
 		exec_cmd_via_type(exec_buf, type_buf);
 	} else {
@@ -118,7 +120,8 @@ void open_process(char *exec_buf, char *type_buf, char *process_name)
 		if ( activate_win() == -1 ) {
 			// 进程存在，但未打开窗口
 			//search_str(process_name, exec_buf, OPEN_FILE);
-			ParseJsonFromFile(process_name, exec_buf, type_buf, OPEN_JSON);
+			//ParseJsonFromFile(process_name, exec_buf, type_buf, OPEN_JSON);
+			search_table(process_name, OPEN_TABLE);
 			exec_cmd_via_type(exec_buf, type_buf);
 		}
 	}

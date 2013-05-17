@@ -47,6 +47,7 @@ int main(int argc, char* argv[])
 	
 	//gtk_init(&argc, &argv);
 	memset(keys, 0, KEY_LEN * sizeof(int));
+	memset(&cur_process, 0, sizeof(cur_process));
 
 	get_dev_path(kbd_path);
 	sys_says("kbd_path : %s\n", kbd_path);
@@ -172,13 +173,13 @@ void catch_user1(int signo)
  */
 void *record_start(void *arg)
 {
-	/*int ret = 0;
+	int ret = 0;
 	
 	ret = MySndRecord(2, INPUT_FILE);
 	if ( ret == -1 ) {
 		fprintf(stderr, "录音失败...\n");
 		exit(-1);
-	}*/
+	}
 		
 	pthread_exit(NULL);
 }
@@ -186,13 +187,7 @@ void *record_start(void *arg)
 void catch_user2(int signo)
 {
 	double rtt;
-	char cmd_buf[BUF_LEN];
-	char type_buf[BUF_LEN];
-	char exec_buf[READ_LINE];
-	
-	memset(cmd_buf, 0, BUF_LEN);
-	memset(type_buf, 0, BUF_LEN);
-	memset(exec_buf, 0, READ_LINE);
+	//pthread_t play_thrd;
 	
 	record_abort = 1;
 	memset(&tvreleased, 0, sizeof(struct timeval));
@@ -201,23 +196,27 @@ void catch_user2(int signo)
 	tv_sub(&tvpressed, &tvreleased);
 	rtt = tvreleased.tv_sec * 1000 + tvreleased.tv_usec / 1000;
 	sys_says("rtt : %0.1f\n\n", rtt);
-	if ( (((int)rtt) / 1000) < 2 ) {
+	if ( ((int)rtt) < 1500 ) {
 		//按下时间小于2s，不是录音操作，放弃
 		return;
 	}
 	
-	//pthread_join(recd_thrd, NULL);
-	parse_record(cmd_buf);
-	if ( cmd_buf[0] == '\0' ) {
+	system(" espeak -vzh+f2 \"您输入的语音为\"");
+	system("aplay -f S16_LE -c 1 -r 16000  /tmp/tmpin.wav");
+	pthread_join(recd_thrd, NULL);
+	parse_record(cur_process.cmd_buf);
+	if ( cur_process.cmd_buf[0] == '\0' ) {
 		return;
 	}
 	
 	if ( !is_config_set() ) {
 		fprintf(stderr, "!is_config_set\n");
-		no_set_config(cmd_buf, exec_buf, type_buf);
+		no_set_config(cur_process.cmd_buf, cur_process.exec_buf, 
+					cur_process.type);
 	} else {
 		fprintf(stderr, "is_config_set\n");
-		has_set_config(cmd_buf, exec_buf, type_buf);
+		has_set_config(cur_process.cmd_buf, cur_process.exec_buf, 
+					cur_process.type);
 	}
 }
 
@@ -229,9 +228,9 @@ GdkFilterReturn child_handle_event( void *event1, GdkEvent *event2,
 	
 	if ( xev->type == PropertyNotify ) {
 	//if ( xev->type == FocusIn ) {
-		g_print("child_handle_event\n");
+		//g_print("child_handle_event\n");
 		kill(getpid(), SIGALRM);
-		g_print("child handle event kill SIGALRM...\n");
+		//g_print("child handle event kill SIGALRM...\n");
 	}
 	
 	return GDK_FILTER_CONTINUE;
@@ -255,15 +254,29 @@ void *listen_window(void *arg)
 
 void catch_alrm(int signo)
 {
-	char window_class[BUF_LEN];
+	char window_class[EXEC_BUF];
 	gchar *tmp;
 	
 	tmp = get_window_class(get_active_window());
-	memset(window_class, 0, BUF_LEN);
+	memset(window_class, 0, EXEC_BUF);
 	memcpy(window_class, tmp, strlen(tmp));
 	g_free(tmp);
 	sys_says("window class name : %s\n", window_class);
+	
 	str_copy_delim(window_class);
+	memset(cur_process.name, 0, BUF_LEN);
+	memcpy(cur_process.name, window_class, strlen(window_class));
+	sys_says("cur_name : %s\n", cur_process.name);
+	
+	int i = 0;
+	for ( ; i < (int)strlen(window_class); i++ ) {
+		if ( window_class[i] == '-' ) {
+			window_class[i] = '_';
+		}
+	}
+	memset(cur_process.table, 0, BUF_LEN);
+	memcpy(cur_process.table, window_class, strlen(window_class));
+	sys_says("cur_table : %s\n", cur_process.table);
 }
 
 /*
@@ -273,29 +286,28 @@ void catch_alrm(int signo)
 void str_copy_delim(char *src)
 {
 	char *p = NULL;
-	char *tmp = NULL;
+	char tmp[32];
 	int len = strlen(src);
 
 	if (src == NULL) {
 		return;
 	}
 
-	tmp = (char*)calloc(len + 1, sizeof(char));
+	memset(tmp, 0, 32);
 	if ( tmp == NULL ) {
 		sys_says("calloc failed...\n");
 		return;
 	}
 	
 	p = strtok(src, ".");
-	printf("first : %s\n", p);
+	//printf("first : %s\n", p);
 
 	p = strtok(NULL, ".");
 	memcpy(tmp, p, strlen(p));
-	printf("end: %s\n", tmp);
+	//printf("end: %s\n", tmp);
 
 	memset(src, 0, len + 1);
 	memcpy(src, tmp, strlen(tmp));
-	free(tmp);
 	printf("name: %s\n", src);
 	
 	if ( *src >= 'A' && *src <= 'Z' ) {

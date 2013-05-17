@@ -5,7 +5,6 @@
 #include "my_xlib.h"
 
 //extern int keys_len;
-extern struct process_info cur_process;
 
 //static int exist_flag = 0;
 Window match_wid = (Window)0;

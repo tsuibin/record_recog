@@ -7,31 +7,33 @@
 #include <string.h>
 #include <unistd.h>
 
-#define INPUT_FILE	"/tmp/tmpin.wav"
-#define OUTPUT_FILE	"/tmp/output"
-#define ROWS_FILE	"/tmp/rows"
-#define READ_WAV	"/tmp/read_wav.wav"
-#define XSEL_OUT	"/tmp/xsel_out"
+#define DATABASE_PATH	"./database/DeepinSpeech.db"
+#define INDEX_TABLE		"SpeechIndex"
+#define OPEN_TABLE		"OpenCommand"
+#define CMD_JSON		"CommandIndex"
 
-#define INDEX_FILE	"conf/index.conf"
-#define OPEN_FILE	"conf/open.conf"
-#define CMD_FILE	"conf/command.conf"
-
-#define INDEX_JSON	"./conf/index.json"
-#define OPEN_JSON	"./conf/open.json"
-#define CMD_JSON	"./conf/command.json"
+#define INPUT_FILE		"/tmp/tmpin.wav"
+#define OUTPUT_FILE		"/tmp/output"
+#define ROWS_FILE		"/tmp/rows"
+#define READ_WAV		"/tmp/read_wav.wav"
+#define XSEL_OUT		"/tmp/xsel_out"
 
 #define sys_err(args ...) {fprintf(stderr, args);}
 #define sys_says(args ...) {fprintf(stdout, args);}
 
-#define KEY_LEN	6
-#define BUF_LEN	80
+#define KEY_LEN		6
+#define BUF_LEN		20
+#define EXEC_BUF 	80
 #define READ_LINE	1024
 
 
 struct process_info {
-	char name[BUF_LEN];
-	char config[BUF_LEN];
+	char name[BUF_LEN];		//进程名
+	char table[BUF_LEN];	//数据表名
+	
+	char cmd_buf[READ_LINE];
+	char exec_buf[EXEC_BUF];
+	char type[BUF_LEN];
 };
 
 #endif
