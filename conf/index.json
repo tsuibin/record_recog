@@ -1,4 +1,4 @@
-/*语音输入 	程序名	标题   配置文件*/
+/*语音输入 	程序名  配置文件*/
 {
 	"index":
 	[
@@ -10,7 +10,6 @@
 				}
 			],
 			"name":"gnome-terminal",
-			"title":"Gnome-terminal",
 			"config":"./conf/terminal.json"
 		},
 		{
@@ -24,7 +23,6 @@
 				}
 			],
 			"name":"firefox",
-			"title":"Firefox",
 			"config":"./conf/firefox.json"
 		},
 		{
@@ -35,7 +33,6 @@
 				}
 			],
 			"name":"nautilus",
-			"title":"Nautilus",
 			"config":"./conf/nautilus.json"
 		},
 		{
@@ -52,7 +49,6 @@
 				}
 			],
 			"name":"deepin-music-player",
-			"title":"Deepin-music-player",
 			"config":"./conf/deepin-music-player.json"
 		},
 		{
@@ -63,7 +59,6 @@
 				}
 			],
 			"name":"deepin-screenshot",
-			"title":"",
 			"config":""
 		},
 		{
@@ -74,7 +69,6 @@
 				}
 			],
 			"name":"wpp",
-			"title":"Wpp",
 			"config":"./conf/wpp.json"
 		}
 	]

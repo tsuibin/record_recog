@@ -12,6 +12,9 @@ void *record_start(void *arg);
 /* 读键盘 */
 void *read_keyboard(void *arg);
 void *listen_window(void *arg);
+GdkFilterReturn child_handle_event( void *event1, GdkEvent *event2, 
+					gpointer userdata );
+void str_copy_delim(char *src);
 
 void catch_user1(int signo);
 void catch_user2(int signo);
@@ -37,12 +40,12 @@ int main(int argc, char* argv[])
 	//char tmp[NAME_LEN];
 	char kbd_path[NAME_LEN];
 	pthread_t read_thrd;
-	pthread_t listen_win_thrd;
+	//pthread_t listen_win_thrd;
 	
-	signal(SIGCHLD, SIG_IGN);
-	init_deamon();
+	//signal(SIGCHLD, SIG_IGN);
+	//init_deamon();
 	
-	gtk_init(&argc, &argv);
+	//gtk_init(&argc, &argv);
 	memset(keys, 0, KEY_LEN * sizeof(int));
 
 	get_dev_path(kbd_path);
@@ -55,11 +58,6 @@ int main(int argc, char* argv[])
 	signal(SIGUSR1, catch_user1);
 	signal(SIGUSR2, catch_user2);
 	signal(SIGALRM, catch_alrm);
-	ret = pthread_create(&read_thrd, 0, read_keyboard, kbd_path);
-	if ( ret != 0 ) {
-		sys_says( "create read keyboard thread failed : %s\n", strerror(errno) );
-		exit(-1);
-	}
 	/*
 	ret = pthread_create(&listen_win_thrd, 0, listen_window, 0);
 	if ( ret != 0 ) {
@@ -67,6 +65,23 @@ int main(int argc, char* argv[])
 		exit(-1);
 	}
 	*/
+	ret = pthread_create(&read_thrd, 0, read_keyboard, kbd_path);
+	if ( ret != 0 ) {
+		sys_says( "create read keyboard thread failed : %s\n", strerror(errno) );
+		exit(-1);
+	}
+	
+	GdkWindow *window = NULL;
+	GdkScreen *screen = NULL;
+	
+	gtk_init(NULL, NULL);
+	screen = gdk_screen_get_default();
+	window = gdk_screen_get_root_window(screen);
+	gdk_window_set_events (window, GDK_PROPERTY_CHANGE_MASK);
+	gdk_window_add_filter (window, child_handle_event, NULL);
+
+	gtk_main();
+	
 	pthread_join(read_thrd, NULL);
 	read_wav_from_str("程序退出");
 	sys_says("程序退出...\n\n");
@@ -109,6 +124,7 @@ void *read_keyboard(void *arg)
 			} else if (ret == sizeof(myinput)) {
 				if (myinput.code == KEY_ESC) {
 					close_fd();
+					gtk_main_quit ();
 					break;
 					//pthread_exit(NULL);
 				}
@@ -156,9 +172,9 @@ void catch_user1(int signo)
  */
 void *record_start(void *arg)
 {
-	int ret = 0;
+	/*int ret = 0;
 	
-	/*ret = MySndRecord(2, INPUT_FILE);
+	ret = MySndRecord(2, INPUT_FILE);
 	if ( ret == -1 ) {
 		fprintf(stderr, "录音失败...\n");
 		exit(-1);
@@ -208,12 +224,14 @@ void catch_user2(int signo)
 GdkFilterReturn child_handle_event( void *event1, GdkEvent *event2,
 							gpointer userdata )
 {
+	pthread_detach(pthread_self());
 	XEvent *xev = (XEvent*)event1;
 	
 	if ( xev->type == PropertyNotify ) {
 	//if ( xev->type == FocusIn ) {
 		g_print("child_handle_event\n");
 		kill(getpid(), SIGALRM);
+		g_print("child handle event kill SIGALRM...\n");
 	}
 	
 	return GDK_FILTER_CONTINUE;
@@ -224,6 +242,7 @@ void *listen_window(void *arg)
 	GdkWindow *window = NULL;
 	GdkScreen *screen = NULL;
 	
+	gtk_init(NULL, NULL);
 	screen = gdk_screen_get_default();
 	window = gdk_screen_get_root_window(screen);
 	gdk_window_set_events (window, GDK_PROPERTY_CHANGE_MASK);
@@ -244,6 +263,44 @@ void catch_alrm(int signo)
 	memcpy(window_class, tmp, strlen(tmp));
 	g_free(tmp);
 	sys_says("window class name : %s\n", window_class);
+	str_copy_delim(window_class);
+}
+
+/*
+* 以指定的字符串分割给出的字符串
+* 得到对应的结果
+*/
+void str_copy_delim(char *src)
+{
+	char *p = NULL;
+	char *tmp = NULL;
+	int len = strlen(src);
+
+	if (src == NULL) {
+		return;
+	}
+
+	tmp = (char*)calloc(len + 1, sizeof(char));
+	if ( tmp == NULL ) {
+		sys_says("calloc failed...\n");
+		return;
+	}
+	
+	p = strtok(src, ".");
+	printf("first : %s\n", p);
+
+	p = strtok(NULL, ".");
+	memcpy(tmp, p, strlen(p));
+	printf("end: %s\n", tmp);
+
+	memset(src, 0, len + 1);
+	memcpy(src, tmp, strlen(tmp));
+	free(tmp);
+	printf("name: %s\n", src);
+	
+	if ( *src >= 'A' && *src <= 'Z' ) {
+		*src |= 0x20;	//大写转小写
+	}
 }
 
 void close_fd()

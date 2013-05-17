@@ -4,7 +4,7 @@
 #define MAX_PROPERTY_VALUE_LEN 4096
 
 static gchar *get_property (Display *disp, Window win, 
-        Atom xa_prop_type, const gchar *prop_name, unsigned long *size);
+        Atom xa_prop_type, gchar *prop_name, unsigned long *size);
 gchar *get_window_class (Display *disp, Window win);
 
 gchar *get_window_class (Window win) {
@@ -43,7 +43,7 @@ gchar *get_window_class (Window win) {
 }
 
 static gchar *get_property (Display *disp, Window win, 
-        Atom xa_prop_type, const gchar *prop_name, unsigned long *size) {
+        Atom xa_prop_type, gchar *prop_name, unsigned long *size) {
     Atom xa_prop_name;
     Atom xa_ret_type;
     int ret_format;
