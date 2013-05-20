@@ -19,16 +19,19 @@ insert into OpenCommand(speech, cmd, type) values('wpp', 'wpp > /dev/null &', 'c
 /* deepin_music_player */
 insert into deepin_music_player(speech, cmd, type) values('播放', 'PlayPause', 'func');
 insert into deepin_music_player(speech, cmd, type) values('暂停', 'PlayPause', 'func');
- insert into deepin_music_player(speech, cmd, type) values('上一曲', 'Next', 'func');
+ insert into deepin_music_player(speech, cmd, type) values('上一曲', 'Prev', 'func');
  insert into deepin_music_player(speech, cmd, type) values('下一曲', 'Next', 'func');
- insert into deepin_music_player(speech, cmd, type) values('上一艘', 'Next', 'func');
+ insert into deepin_music_player(speech, cmd, type) values('上一艘', 'Prev', 'func');
 insert into deepin_music_player(speech, cmd, type) values('下一艘', 'Next', 'func');
 insert into deepin_music_player(speech, cmd, type) values('上一首', 'Prev', 'func');
 insert into deepin_music_player(speech, cmd, type) values('下一首', 'Next', 'func');
- insert into deepin_music_player(speech, cmd, type) values('下一宿', 'Next', 'func');
-  insert into deepin_music_player(speech, cmd, type) values('上一宿', 'Next', 'func');
+insert into deepin_music_player(speech, cmd, type) values('下一宿', 'Next', 'func');
+insert into deepin_music_player(speech, cmd, type) values('上一宿', 'Prev', 'func');
+insert into deepin_music_player(speech, cmd, type) values('下一搜', 'Next', 'func');
+insert into deepin_music_player(speech, cmd, type) values('上一搜', 'Prev', 'func');
 insert into deepin_music_player(speech, cmd, type) values('快进', 'Forward', 'func');
 insert into deepin_music_player(speech, cmd, type) values('重放', 'Rewind', 'func');
+insert into deepin_music_player(speech, cmd, type) values('重发', 'Rewind', 'func');
 insert into deepin_music_player(speech, cmd, type) values('停止', 'Stop', 'func');
 insert into deepin_music_player(speech, cmd, type) values('退出', 'Quit', 'func');
 

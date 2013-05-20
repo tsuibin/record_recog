@@ -13,6 +13,7 @@ MSCLIBS_PATH : 为科大讯飞库的位置，请根据系统架构具体选择�
 依赖：
 gksu
 xsel
+espeak
 #wmctrl
 libwnck-3
 libasound2-dev

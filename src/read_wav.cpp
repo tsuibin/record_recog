@@ -79,12 +79,16 @@ void read_wav_from_file(const char *text)
 		sys_says("xsel clear ...\n");
 		system("xsel -c");
 	}
+	
+	return;
 }
 
 void read_xsel()
 {
 	system("xsel > /tmp/xsel_out");
 	read_wav_from_file(XSEL_OUT);
+	
+	return;
 }
 
 /*
