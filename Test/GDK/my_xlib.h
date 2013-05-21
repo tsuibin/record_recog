@@ -8,8 +8,6 @@
 #include <X11/cursorfont.h>
 #include <X11/Xmu/WinUtil.h>
 #include <X11/extensions/XTest.h>
-#include <gtk/gtk.h>
-#include <gdk/gdk.h>
 #include <glib.h>
 
 /* 执行指令 */

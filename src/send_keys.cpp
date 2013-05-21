@@ -5,7 +5,6 @@
 #include "my_xlib.h"
 
 //extern int keys_len;
-extern struct process_info cur_process;
 
 //static int exist_flag = 0;
 Window match_wid = (Window)0;
@@ -26,8 +25,7 @@ void exec_cmd_via_keys(int *keys)
 	}
 	sys_err("create display ok!\n");
 	
-	//get_wid(cur_process.name);
-	get_wid(cur_process.item);
+	activate_win();
 	if ( match_wid == (Window)0 ) {
 		sys_err("match wid failed...\n");
 		XCloseDisplay(disp);

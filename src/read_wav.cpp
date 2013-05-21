@@ -11,7 +11,7 @@ void read_wav_from_str(const char *str)
 		return ;
 	}
 
-	sys_says("str : %s\nlen : %lu\n", str, strlen(str));
+	sys_says("str : %s\nlen : %u\n", str, strlen(str));
 	if ( SpeechSynth(str, READ_WAV) == -1 ) {
 		sys_says("SpeechSynth failed...\n");
 		return;
@@ -57,7 +57,7 @@ void read_wav_from_file(const char *text)
 		if ( strlen(buf) < 1 ) {
 			continue;
 		}
-		sys_says("buf : %s\nlen : %lu\n", buf, strlen(buf));
+		sys_says("buf : %s\nlen : %u\n", buf, strlen(buf));
 		if ( SpeechSynth(buf, READ_WAV) == -1 ) {
 			sys_says("SpeechSynth failed...\n");
 			continue;
@@ -79,12 +79,16 @@ void read_wav_from_file(const char *text)
 		sys_says("xsel clear ...\n");
 		system("xsel -c");
 	}
+	
+	return;
 }
 
 void read_xsel()
 {
 	system("xsel > /tmp/xsel_out");
 	read_wav_from_file(XSEL_OUT);
+	
+	return;
 }
 
 /*
