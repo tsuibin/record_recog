@@ -4,11 +4,82 @@
 
 extern struct process_info cur_process;
 
+static int search_zhcn_callback(void *data, int col_num, 
+							char **col_value, char **col_name);
+							
 static int search_table_callback(void *data, int col_num, 
 							char **col_value, char **col_name);
 
 static int search_index_table_callback(void *data, int col_num, 
 							char **col_value, char **col_name);
+
+void get_pinyin(char *cmd_buf)
+{
+	char tmp[4];
+	char cmd[READ_LINE];
+	char buf[EXEC_BUF];
+	sqlite3 *db = NULL;
+	char *err_msg = NULL;
+	char sql[READ_LINE];
+	char *bakup = cmd_buf;
+
+	/* 打开内存数据库 */
+	if ( SQLITE_OK != sqlite3_open(DATABASE_PATH, &db) ) {
+		sys_err("search_table sqlite3_open failed...\n");
+	}
+	
+	memset(cmd, 0, READ_LINE);
+	
+	while ( *cmd_buf != '\0' ) {
+		memset(tmp, 0, 4);
+		memset(buf, 0, EXEC_BUF);
+		memset(sql, 0, READ_LINE);
+		
+		memcpy(tmp, cmd_buf, 3);
+		sys_says("tmp : %s\n", tmp);
+		sprintf( sql, "select pinyin from zhIndex where zhcn=\'%s\'", tmp );
+		/* 查询， 并调用回调函数 */
+		if ( SQLITE_OK != sqlite3_exec( db, sql, search_zhcn_callback, 
+								buf, &err_msg ) ) {
+			sys_err("search_table sqlite3_exec failed...\n");			
+		}
+		sys_says("buf : %s\n", buf);
+		if ( buf[0] != '\0' )
+			strcat(cmd, buf);
+		sys_says("cmd_buf : %s\n", cmd_buf);
+		cmd_buf += 3;
+	}
+	
+	if ( SQLITE_OK != sqlite3_close(db) ) {
+		sys_err("search_table sqlite3_close failed...\n");	
+	}
+	
+	sys_says("cmd : %s\n", cmd);
+	if ( cmd[0] != '\0' ) {
+		memset(bakup, 0, READ_LINE);
+		memcpy(bakup, cmd, strlen(cmd));
+	}
+	
+	return ;
+}
+
+static int search_zhcn_callback(void *data, int col_num, 
+							char **col_value, char **col_name)
+{
+	int i;
+	char *buf = (char*)data;
+
+	for ( i = 0; i < col_num; i++ ) {
+		printf( "%s = %s \n", col_name[i], col_value[i] ? col_value[i] : "NULL" );
+		if ( strcmp("pinyin", col_name[i]) == 0 ) {
+			//memset(buf, 0, EXEC_BUF);
+			strcpy(buf, col_value[i]);
+		}
+	}
+	sys_says("buf : %s\n", buf);
+
+	return 0;
+}
 
 void search_table(char *cmd_buf, const char *table_name)
 {

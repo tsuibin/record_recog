@@ -1,12 +1,19 @@
 /* SpeechIndex */
-insert into SpeechIndex(speech, ProcessName, TableName) values('终端', 'gnome-terminal', 'gnome_terminal');
-insert into SpeechIndex(speech, ProcessName, TableName) values('浏览器', 'firefox', 'firefox');
-insert into SpeechIndex(speech, ProcessName, TableName) values('火狐', 'firefox', 'firefox');
-insert into SpeechIndex(speech, ProcessName, TableName) values('播放音乐', 'deepin-music-player', 'deepin_music_player');
-insert into SpeechIndex(speech, ProcessName, TableName) values('听音乐', 'deepin-music-player', 'deepin_music_player');
-insert into SpeechIndex(speech, ProcessName, TableName) values('听歌', 'deepin-music-player', 'deepin_music_player');
-insert into SpeechIndex(speech, ProcessName, TableName) values('文件管理器', 'nautilus', 'nautilus');
-insert into SpeechIndex(speech, ProcessName, TableName) values('演示文稿', 'wpp', 'wpp');
+insert into SpeechIndex(speech, ProcessName, TableName) values('zhongduan', 'gnome-terminal', 'gnome_terminal');
+insert into SpeechIndex(speech, ProcessName, TableName) values('zongduan', 'gnome-terminal', 'gnome_terminal');
+
+insert into SpeechIndex(speech, ProcessName, TableName) values('liulanqi', 'firefox', 'firefox');
+insert into SpeechIndex(speech, ProcessName, TableName) values('liunanqi', 'firefox', 'firefox');
+
+insert into SpeechIndex(speech, ProcessName, TableName) values('huohu', 'firefox', 'firefox');
+insert into SpeechIndex(speech, ProcessName, TableName) values('bofangyinyue', 'deepin-music-player', 'deepin_music_player');
+insert into SpeechIndex(speech, ProcessName, TableName) values('tingyinyue', 'deepin-music-player', 'deepin_music_player');
+insert into SpeechIndex(speech, ProcessName, TableName) values('tingge', 'deepin-music-player', 'deepin_music_player');
+
+insert into SpeechIndex(speech, ProcessName, TableName) values('wenjianguanliqi', 'nautilus', 'nautilus');
+
+insert into SpeechIndex(speech, ProcessName, TableName) values('yanshiwengao', 'wpp', 'wpp');
+insert into SpeechIndex(speech, ProcessName, TableName) values('yansiwengao', 'wpp', 'wpp');
 
 /* OpenCommand */
 insert into OpenCommand(speech, cmd, type) values('firefox', 'firefox > /dev/null &', 'cmd');
@@ -17,39 +24,52 @@ insert into OpenCommand(speech, cmd, type) values('deepin-screenshot', 'deepin-s
 insert into OpenCommand(speech, cmd, type) values('wpp', 'wpp > /dev/null &', 'cmd');
 
 /* deepin_music_player */
-insert into deepin_music_player(speech, cmd, type) values('播放', 'PlayPause', 'func');
-insert into deepin_music_player(speech, cmd, type) values('暂停', 'PlayPause', 'func');
- insert into deepin_music_player(speech, cmd, type) values('上一曲', 'Prev', 'func');
- insert into deepin_music_player(speech, cmd, type) values('下一曲', 'Next', 'func');
- insert into deepin_music_player(speech, cmd, type) values('上一艘', 'Prev', 'func');
-insert into deepin_music_player(speech, cmd, type) values('下一艘', 'Next', 'func');
-insert into deepin_music_player(speech, cmd, type) values('上一首', 'Prev', 'func');
-insert into deepin_music_player(speech, cmd, type) values('下一首', 'Next', 'func');
-insert into deepin_music_player(speech, cmd, type) values('下一宿', 'Next', 'func');
-insert into deepin_music_player(speech, cmd, type) values('上一宿', 'Prev', 'func');
-insert into deepin_music_player(speech, cmd, type) values('下一搜', 'Next', 'func');
-insert into deepin_music_player(speech, cmd, type) values('上一搜', 'Prev', 'func');
-insert into deepin_music_player(speech, cmd, type) values('快进', 'Forward', 'func');
-insert into deepin_music_player(speech, cmd, type) values('重放', 'Rewind', 'func');
-insert into deepin_music_player(speech, cmd, type) values('重发', 'Rewind', 'func');
-insert into deepin_music_player(speech, cmd, type) values('停止', 'Stop', 'func');
-insert into deepin_music_player(speech, cmd, type) values('退出', 'Quit', 'func');
+insert into deepin_music_player(speech, cmd, type) values('bofang', 'PlayPause', 'func');
+insert into deepin_music_player(speech, cmd, type) values('zanting', 'PlayPause', 'func');
+insert into deepin_music_player(speech, cmd, type) values('zhanting', 'PlayPause', 'func');
+
+insert into deepin_music_player(speech, cmd, type) values('shangyiqu', 'Prev', 'func');
+insert into deepin_music_player(speech, cmd, type) values('sangyiqu', 'Prev', 'func');
+insert into deepin_music_player(speech, cmd, type) values('sangyishou', 'Prev', 'func');
+insert into deepin_music_player(speech, cmd, type) values('shangyishou', 'Prev', 'func');
+insert into deepin_music_player(speech, cmd, type) values('sangyisou', 'Prev', 'func');
+insert into deepin_music_player(speech, cmd, type) values('shangyisou', 'Prev', 'func');
+
+insert into deepin_music_player(speech, cmd, type) values('xiayiqu', 'Next', 'func');
+insert into deepin_music_player(speech, cmd, type) values('xiayishou', 'Next', 'func');
+insert into deepin_music_player(speech, cmd, type) values('xiayisou', 'Next', 'func');
+
+insert into deepin_music_player(speech, cmd, type) values('kuaijin', 'Forward', 'func');
+insert into deepin_music_player(speech, cmd, type) values('chongfang', 'Rewind', 'func');
+insert into deepin_music_player(speech, cmd, type) values('congfang', 'Rewind', 'func');
+insert into deepin_music_player(speech, cmd, type) values('chongfa', 'Rewind', 'func');
+insert into deepin_music_player(speech, cmd, type) values('congfa', 'Rewind', 'func');
+insert into deepin_music_player(speech, cmd, type) values('tingzhi', 'Stop', 'func');
+insert into deepin_music_player(speech, cmd, type) values('tingzi', 'Stop', 'func');
+insert into deepin_music_player(speech, cmd, type) values('tuichu', 'Quit', 'func');
+insert into deepin_music_player(speech, cmd, type) values('tuicu', 'Quit', 'func');
 
 /* firefox */
-insert into firefox(speech, cmd, type) values('新建标签', '0xffe3 0x0054', 'keys');
-insert into firefox(speech, cmd, type) values('新建窗口', '0xffe3 0x004e', 'keys');
-insert into firefox(speech, cmd, type) values('全屏', '0xffc8', 'keys');
-insert into firefox(speech, cmd, type) values('退出全屏', '0xffc8', 'keys');
-insert into firefox(speech, cmd, type) values('最大化', '0xffe9 0xffc2', 'keys');
-insert into firefox(speech, cmd, type) values('恢复', '0xffe9 0xffc3', 'keys');
-insert into firefox(speech, cmd, type) values('关闭', '0xffe9 0xffc1', 'keys');
-insert into firefox(speech, cmd, type) values('回到开头', '0xff50', 'keys');
-insert into firefox(speech, cmd, type) values('跳到结尾', '0xff57', 'keys');
-insert into firefox(speech, cmd, type) values('上一页', '0xff55', 'keys');
-insert into firefox(speech, cmd, type) values('下一页', '0xff56', 'keys');
-insert into firefox(speech, cmd, type) values('百度', 'firefox -new-tab www.baidu.com > /dev/null &', 'cmd');
-insert into firefox(speech, cmd, type) values('白度', 'firefox -new-tab www.baidu.com > /dev/null &', 'cmd');
-insert into firefox(speech, cmd, type) values('谷歌', 'firefox -new-tab www.google.com.hk > /dev/null &', 'cmd');
+insert into firefox(speech, cmd, type) values('xinjianbiaoqian', '0xffe3 0x0054', 'keys');
+insert into firefox(speech, cmd, type) values('xinjianchuangkou', '0xffe3 0x004e', 'keys');
+insert into firefox(speech, cmd, type) values('xinjiancuangkou', '0xffe3 0x004e', 'keys');
+insert into firefox(speech, cmd, type) values('quanpin', '0xffc8', 'keys');
+insert into firefox(speech, cmd, type) values('quanping', '0xffc8', 'keys');
+insert into firefox(speech, cmd, type) values('tuichuquanping', '0xffc8', 'keys');
+insert into firefox(speech, cmd, type) values('tuichuquanpin', '0xffc8', 'keys');
+insert into firefox(speech, cmd, type) values('tuicuquanping', '0xffc8', 'keys');
+insert into firefox(speech, cmd, type) values('tuicuquanpin', '0xffc8', 'keys');
+insert into firefox(speech, cmd, type) values('zuidahua', '0xffe9 0xffc2', 'keys');
+insert into firefox(speech, cmd, type) values('zhuidahua', '0xffe9 0xffc2', 'keys');
+insert into firefox(speech, cmd, type) values('huifu', '0xffe9 0xffc3', 'keys');
+insert into firefox(speech, cmd, type) values('guanbi', '0xffe9 0xffc1', 'keys');
+insert into firefox(speech, cmd, type) values('huidaokaitou', '0xff50', 'keys');
+insert into firefox(speech, cmd, type) values('tiaodaojiewei', '0xff57', 'keys');
+insert into firefox(speech, cmd, type) values('sangyiye', '0xff55', 'keys');
+insert into firefox(speech, cmd, type) values('shangyiye', '0xff55', 'keys');
+insert into firefox(speech, cmd, type) values('xiayiye', '0xff56', 'keys');
+insert into firefox(speech, cmd, type) values('baidu', 'firefox -new-tab www.baidu.com > /dev/null &', 'cmd');
+insert into firefox(speech, cmd, type) values('guge', 'firefox -new-tab www.google.com.hk > /dev/null &', 'cmd');
 
 /*
 insert into (speech, cmd, type) values();

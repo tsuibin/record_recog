@@ -40,6 +40,9 @@ void no_set_config(char *cmd_buf, char *exec_buf, char *type_buf)
 {
 	//search_index(cmd_buf);
 	//ParseJsonIndex(cmd_buf);
+	if ( (cmd_buf[0] & 0x80) != 0 ) {
+		get_pinyin(cmd_buf);
+	}
 	search_index_table();
 				
 	if ( cur_process.name[0] == '\0' ) {
@@ -58,6 +61,9 @@ void has_set_config(char *cmd_buf, char *exec_buf, char *type_buf)
 	sys_says("cmd : %s\n", cmd_buf);
 	memset(exec_buf, 0, EXEC_BUF);
 	//ParseJsonFromFile(cmd_buf, exec_buf, type_buf, cur_process.config);
+	if ( (cmd_buf[0] & 0x80) != 0 ) {
+		get_pinyin(cmd_buf);
+	}
 	search_table(cmd_buf, cur_process.table);
 	
 	sys_says("has_set_config exec : %s\n", exec_buf);
