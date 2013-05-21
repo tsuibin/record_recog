@@ -1,4 +1,20 @@
+#include <unistd.h>
+#include <glibtop.h>
+#include <glibtop/procstate.h>
+
+#define WNCK_I_KNOW_THIS_IS_UNSTABLE
 #include <libwnck/libwnck.h>
+#undef WNCK_I_KNOW_THIS_IS_UNSTABLE
+
+void get_name_via_pid(pid_t pid)
+{
+	glibtop_proc_state buf;
+
+	memset(&buf, 0, sizeof(buf));
+	glibtop_get_proc_state( &buf, pid );
+
+	g_print("cmd : %s\n\n", buf.cmd );
+}
 
 int main(int argc, char **argv)
 {
@@ -19,12 +35,10 @@ int main(int argc, char **argv)
 		}
 		g_print( "%s%s\n", wnck_window_get_name(window), 
 				window == active_win ? " (active)" : "" );
-		g_print("window id : 0x%x\tpid : %d\n\n", wnck_window_get_xid(window), 
+		g_print("window id : 0x%x\tpid : %d\n", wnck_window_get_xid(window), 
 				wnck_window_get_pid(window) );
-		if ( 4921 == wnck_window_get_pid(window) ) {
-			wnck_window_activate(window, 1);
-			break;
-		}
+				
+		get_name_via_pid( wnck_window_get_pid(window) );
 	}
 
 	return 0;
