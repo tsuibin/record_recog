@@ -25,7 +25,8 @@ void exec_cmd_via_keys(int *keys)
 	}
 	sys_err("create display ok!\n");
 	
-	activate_win();
+	//activate_win();
+	match_wid = get_active_window();
 	if ( match_wid == (Window)0 ) {
 		sys_err("match wid failed...\n");
 		XCloseDisplay(disp);
@@ -42,7 +43,7 @@ void exec_cmd_via_keys(int *keys)
 		send_key_press( disp, match_wid, *tmp_key  );
 	}
 
-	usleep(500);
+	//usleep(500);
 
 	sys_err("set keys release...\n");
 	tmp_key = keys;

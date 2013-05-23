@@ -10,7 +10,7 @@
 #define DATABASE_PATH	"./database/DeepinSpeech.db"
 #define INDEX_TABLE		"SpeechIndex"
 #define OPEN_TABLE		"OpenCommand"
-#define CMD_JSON		"CommandIndex"
+#define COMMON_TABLE	"CommonIndex"
 
 #define INPUT_FILE		"/tmp/tmpin.wav"
 #define OUTPUT_FILE		"/tmp/output"

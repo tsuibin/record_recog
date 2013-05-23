@@ -1,0 +1,6 @@
+SystemDbus 配置文件：
+/etc/dbus-1/system.d   权限
+
+/usr/share/dbus-1/system-services   名称、执行路径、用户
+
+/usr/share/dbus-1/interfaces   具体方法的描述
