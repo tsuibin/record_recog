@@ -27,6 +27,7 @@ Window get_active_window()
 		}*/
 		if ( window == active_win ) {
 			active_xid = wnck_window_get_xid(window);
+			sys_says("active xid : 0x%x\n", active_xid);
 			break;
 		}
 	}
@@ -54,6 +55,7 @@ int activate_win()
 		if ( pid == wnck_window_get_pid(window) ) {
 			match_wid = wnck_window_get_xid(window);
 			wnck_window_activate(window, 1);
+			sys_says("match_wid xid : 0x%x\n", match_wid);
 			flag = 1;
 			break;
 		}
@@ -76,8 +78,13 @@ int get_pid_via_name( char *process_name )
 	FILE *fp = NULL;
 	
 	printf("get_pid_via_name : %s\n", process_name);
-	sprintf( buf, "ps aux | grep %s | sed -n 1p | awk '{print $2}' > /tmp/pid", 
-			process_name );
+	if ( memcmp(process_name, "wpp", 3) == 0 ) {
+		sprintf( buf, "ps aux | grep wps-office | sed -n 1p | awk '{print $2}' \
+				> /tmp/pid" );
+	} else {
+		sprintf( buf, "ps aux | grep %s | sed -n 1p | awk '{print $2}' \
+				> /tmp/pid", process_name );
+	}
 	system(buf);
 	
 	if ( (fp = fopen("/tmp/pid", "r")) == NULL ) {

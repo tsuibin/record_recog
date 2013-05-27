@@ -3,6 +3,8 @@
 extern int keys[KEY_LEN];
 extern struct process_info cur_process;
 
+int active_flag = 0;
+
 void exec_cmd_via_type(char *exec_buf, char *type_buf)
 {
 	if ( exec_buf == NULL || type_buf == NULL ) {
@@ -40,6 +42,11 @@ void no_set_config(char *cmd_buf, char *exec_buf, char *type_buf)
 {
 	//search_index(cmd_buf);
 	//ParseJsonIndex(cmd_buf);
+	char tmp[BUF_LEN];
+	memset(tmp, 0, BUF_LEN);
+	
+	memcpy(tmp, cur_process.name, strlen(cur_process.name));
+	sys_says("tmp : %s\n", tmp);
 	if ( (cmd_buf[0] & 0x80) != 0 ) {
 		get_pinyin(cmd_buf);
 	}
@@ -47,6 +54,9 @@ void no_set_config(char *cmd_buf, char *exec_buf, char *type_buf)
 				
 	if ( cur_process.name[0] == '\0' ) {
 		return;
+	}
+	if ( memcmp(tmp, cur_process.name, strlen(tmp)) == 0 ) {
+		active_flag = 1;
 	}
 				
 	open_process(exec_buf, type_buf, cur_process.name);
@@ -68,10 +78,16 @@ void has_set_config(char *cmd_buf, char *exec_buf, char *type_buf)
 	
 	sys_says("has_set_config exec : %s\n", exec_buf);
 	if ( exec_buf[0] != '\0' ) {
-		activate_win();
+		//activate_win();
 		exec_cmd_via_type(exec_buf, type_buf);
 	} else {
-		no_set_config(cmd_buf, exec_buf, type_buf);
+		search_table(cmd_buf, COMMON_TABLE);
+		if ( exec_buf[0] == '\0' ) {
+			no_set_config(cmd_buf, exec_buf, type_buf);
+		} else {
+			//activate_win();
+			exec_cmd_via_type(exec_buf, type_buf);
+		}
 	}
 }
 
@@ -123,7 +139,7 @@ void open_process(char *exec_buf, char *type_buf, char *process_name)
 	} else {
 		printf("open process : %s...\n", process_name );
 		//if ( set_focus() == -1 ) {
-		if ( activate_win() == -1 ) {
+		if ( (!active_flag) && (activate_win() == -1) ) {
 			// 进程存在，但未打开窗口
 			//search_str(process_name, exec_buf, OPEN_FILE);
 			//ParseJsonFromFile(process_name, exec_buf, type_buf, OPEN_JSON);
