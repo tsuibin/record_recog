@@ -8,7 +8,7 @@
 
 #define sys_says(arg ...) { fprintf(stderr, arg); }
 
-int main()
+int main(int argc, char **argv)
 {
 	char zh[ZH_LEN];
 	char en[EN_LEN];
@@ -17,7 +17,12 @@ int main()
 	char *err_msg = NULL;
 	char sql[BUF_LEN];
 	
-	if ( (fp = fopen("pinyin", "r")) == NULL ) {
+	if ( argc != 2 ) {
+		sys_says("Usage : %s <file>\n", argv[0]);
+		return -1;
+	}
+
+	if ( (fp = fopen(argv[1], "r")) == NULL ) {
 		sys_says("open file failed...\n");
 		return -1;
 	}
@@ -34,6 +39,9 @@ int main()
 		fscanf(fp, "%s %s", zh, en);
 		//sys_says("zh : %s\ten : %s\n", zh, en);
 		
+		if ( zh[0] == '\0' ) {
+			continue;
+		}
 		sprintf(sql, "insert into zhIndex(zhcn, pinyin) \
 				values(\'%s\', \'%s\')", zh, en);
 		if ( SQLITE_OK != sqlite3_exec( db, sql, 0, 0, &err_msg ) ) {
